@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
 const passport = require("passport");
+const Unit = require("./unitModel");
 
 const studentSchema = new mongoose.Schema(
 	{
@@ -19,6 +20,11 @@ const studentSchema = new mongoose.Schema(
 		class: {
 			type: String,
 			default: "",
+		},
+		myUnits: {
+			type: [mongoose.Schema.objectId],
+			ref: Unit,
+			default: [],
 		},
 	},
 	{

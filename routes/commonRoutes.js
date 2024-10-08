@@ -7,6 +7,7 @@ const Assignment = require("../models/assignmentModel");
 const passport = require("passport");
 const Event = require("../models/events");
 const flash = require("connect-flash");
+const unit = require("../functions/unitController");
 router.use(flash());
 
 const {
@@ -49,6 +50,7 @@ router.get("/dashboard", async (req, res) => {
 			userType: dashType,
 			formatDate: formatDate,
 			deadlineReached: deadlineReached,
+			messages: req.flash("info"),
 		};
 
 		const fetchAdminData = async () => {
@@ -68,12 +70,14 @@ router.get("/dashboard", async (req, res) => {
 				AsClass: studentClass.class,
 			});
 			user = await Student.findById(userId);
+			const unitData = await unit.getUnitData(user.myUnits);
 
 			return {
 				studentClass: studentClass.class,
 				classAssignments: classAssignments,
 				classes: classes,
 				user: user,
+				unitData: unitData,
 			};
 		};
 
@@ -83,11 +87,13 @@ router.get("/dashboard", async (req, res) => {
 				{}
 			);
 			user = await Teacher.findById(userId);
+			const myUnitData = await unit.getMyUnitData(user._id);
 
 			return {
 				assignments: teacherAssignments,
 				user: user,
 				classes: classes,
+				myUnitsData: myUnitData,
 			};
 		};
 
@@ -142,7 +148,7 @@ router.post("/register", async (req, res) => {
 		req.flash("info", "Invalid user type.");
 		res.redirect("/register");
 	}
-	console.log(req.body);
+
 	UserModel.register(
 		{ username: req.body.username },
 		req.body.password,

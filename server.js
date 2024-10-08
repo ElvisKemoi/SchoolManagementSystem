@@ -24,7 +24,7 @@ app.use(
 );
 
 // DATABASE CONNECTION
-mongoose.connect("mongodb://localhost:27017/SMS");
+mongoose.connect("mongodb://localhost:27017/WesterTechnicalCollege");
 
 // IMPORTING ROUTES
 const eventsRoutes = require("./routes/events");
@@ -33,12 +33,14 @@ const assignmentRoutes = require("./routes/assignmentRoute");
 const classRoutes = require("./routes/classRoutes");
 const studentRoutes = require("./routes/studentRoutes");
 const commonRoutes = require("./routes/commonRoutes");
+const unitRoutes = require("./routes/unitRoute");
 app.use("/", teachersRoutes);
 app.use("/", eventsRoutes);
 app.use("/", assignmentRoutes);
 app.use("/", classRoutes);
 app.use("/", studentRoutes);
 app.use("/", commonRoutes);
+app.use("/unit", unitRoutes);
 
 // Ensure error handling middleware is set up
 app.use((err, req, res, next) => {

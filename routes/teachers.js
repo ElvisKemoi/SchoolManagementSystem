@@ -52,15 +52,15 @@ router.post("/teachers/add", async (req, res) => {
 router.post("/teachers/:id/password", async (req, res) => {
 	try {
 		const { password } = req.body;
-		const teacher = await Teacher.findById(req.params.id);
-		if (!teacher) {
+		const theTeacher = await Teacher.findById(req.params.id);
+		if (!theTeacher) {
 			return res.status(404).json({ error: "Teacher not found" });
 		}
-		teacher.setPassword(password, async (err) => {
+		theTeacher.setPassword(password, async (err) => {
 			if (err) {
 				return res.status(500).json({ error: err.message });
 			}
-			await teacher.save();
+			await theTeacher.save();
 			res.status(200).redirect("/login");
 			// res.status(200).json({ message: "Password updated successfully" });
 		});
@@ -85,11 +85,11 @@ router.get("/teachers", async (req, res) => {
 
 router.get("/teachers/:id", async (req, res) => {
 	try {
-		const teacher = await Teacher.findById(req.params.id);
-		if (!teacher) {
+		const theTeacher = await Teacher.findById(req.params.id);
+		if (!theTeacher) {
 			return res.status(404).json({ error: "Teacher not found" });
 		}
-		res.status(200).json(teacher);
+		res.status(200).json(theTeacher);
 	} catch (err) {
 		res.status(500).json({ error: err.message });
 	}
@@ -130,9 +130,9 @@ router.post("/teachers/delete/:id", async (req, res) => {
 				console.log("No teacher found with the given ID");
 			}
 
-			const teacher = await Teacher.findByIdAndDelete(req.params.id);
+			const theTeacher = await Teacher.findByIdAndDelete(req.params.id);
 
-			if (!teacher) {
+			if (!theTeacher) {
 				return res.status(404).json({ error: "Teacher not found" });
 			}
 			res.redirect("/teachersList");
@@ -149,13 +149,13 @@ router.post("/teachers/update/:id", async (req, res) => {
 	// console.log(req.body);
 	try {
 		const updates = req.body;
-		const teacher = await Teacher.findByIdAndUpdate(req.params.id, updates, {
+		const theTeacher = await Teacher.findByIdAndUpdate(req.params.id, updates, {
 			new: true,
 		});
-		if (!teacher) {
+		if (!theTeacher) {
 			return res.status(404).json({ error: "Teacher not found" });
 		}
-		res.status(200).json(teacher);
+		res.status(200).json(theTeacher);
 	} catch (err) {
 		res.status(500).json({ error: err.message });
 	}
@@ -171,13 +171,13 @@ router.post("/teachers/:id/subjects", async (req, res) => {
 	}
 
 	try {
-		const teacher = await Teacher.findByIdAndUpdate(
+		const theTeacher = await Teacher.findByIdAndUpdate(
 			id,
 			{ $addToSet: { subjectsTaught: newSubject } },
 			{ new: true }
 		);
 
-		if (!teacher) {
+		if (!theTeacher) {
 			return res.status(404).send("Teacher not found");
 		}
 
@@ -199,14 +199,14 @@ router.post("/teacher/:id/delete/subjects", async (req, res) => {
 	}
 
 	try {
-		const teacher = await Teacher.findByIdAndUpdate(
+		const theTeacher = await Teacher.findByIdAndUpdate(
 			id,
 			{
 				$pull: { subjectsTaught: subjectToDelete },
 			},
 			{ new: true }
 		);
-		if (!teacher) {
+		if (!theTeacher) {
 			return res.status(404).send("Teacher not found");
 		}
 		res.redirect("/dashboard");
