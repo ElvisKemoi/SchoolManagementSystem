@@ -121,10 +121,188 @@ router.get("/dashboard", async (req, res) => {
 		res.status(500).send("Internal Server Error");
 	}
 });
+router.post("/units", async (req, res) => {
+	try {
+		if (!req.isAuthenticated()) {
+			return res.redirect("/login");
+		}
+		const { unitId } = req.body;
+		const dashType = await req.session.passport.user.type;
+		const userId = req.session.passport.user.id;
+		let user;
+		const classes = await Class.find({}).sort({ className: 1 });
+		const thisUnitData = await unit.getUnit(unitId);
+
+		const commonData = {
+			userName: req.user.username,
+			userId: req.user._id,
+			userType: dashType,
+			formatDate: formatDate,
+			Unit: thisUnitData,
+			messages: req.flash("info"),
+		};
+
+		// const fetchAdminData = async () => {
+		// 	const [numbers, classes, allTeachers, user] = await Promise.all([
+		// 		Numbers(),
+		// 		Class.find().sort({ className: 1 }),
+		// 		Teacher.find(),
+		// 		Admin.findById(userId),
+		// 	]);
+		// 	return { numbers, classes, allTeachers, user };
+		// };
+		// await countMembers();
+
+		const fetchStudentData = async () => {
+			const studentClass = await Student.findById(userId);
+			const classAssignments = await Assignment.find({
+				AsClass: studentClass.class,
+			});
+			user = await Student.findById(userId);
+			const unitData = await unit.getUnitData(user.myUnits);
+
+			return {
+				studentClass: studentClass.class,
+				classAssignments: classAssignments,
+				classes: classes,
+				user: user,
+				unitData: unitData,
+			};
+		};
+
+		const fetchTeacherData = async () => {
+			const teacherAssignments = await Assignment.find(
+				{ createdBy: req.user.username },
+				{}
+			);
+			user = await Teacher.findById(userId);
+			// const myUnitData = await unit.getMyUnitData(user._id);
+			// myUnitsData: myUnitData,
+
+			return {
+				assignments: teacherAssignments,
+				user: user,
+				classes: classes,
+			};
+		};
+
+		let dashboardData = {};
+		switch (dashType) {
+			// 	case "Admin":
+			// 		dashboardData = await fetchAdminData();
+
+			// 		res.render("dashboardAdmin", { ...commonData, ...dashboardData });
+			// 		break;
+			case "Student":
+				dashboardData = await fetchStudentData();
+				res.render("unitView", { ...commonData, ...dashboardData });
+				break;
+			case "Teacher":
+				dashboardData = await fetchTeacherData();
+				res.render("unitPanel", { ...commonData, ...dashboardData });
+				break;
+			default:
+				res.status(403).send("You do not have access to this page");
+				break;
+		}
+	} catch (error) {
+		console.error("Error accessing the dashboard:", error);
+		res.status(500).send("Internal Server Error");
+	}
+});
+router.get("/units", async (req, res) => {
+	try {
+		if (!req.isAuthenticated()) {
+			return res.redirect("/login");
+		}
+
+		const unitId = req.flash("origin")[0];
+
+		const dashType = await req.session.passport.user.type;
+		const userId = req.session.passport.user.id;
+		let user;
+		const classes = await Class.find({}).sort({ className: 1 });
+		const thisUnitData = await unit.getUnit(unitId);
+
+		const commonData = {
+			userName: req.user.username,
+			userId: req.user._id,
+			userType: dashType,
+			formatDate: formatDate,
+			Unit: thisUnitData,
+			messages: req.flash("info"),
+		};
+
+		// const fetchAdminData = async () => {
+		// 	const [numbers, classes, allTeachers, user] = await Promise.all([
+		// 		Numbers(),
+		// 		Class.find().sort({ className: 1 }),
+		// 		Teacher.find(),
+		// 		Admin.findById(userId),
+		// 	]);
+		// 	return { numbers, classes, allTeachers, user };
+		// };
+		// await countMembers();
+
+		const fetchStudentData = async () => {
+			const studentClass = await Student.findById(userId);
+			const classAssignments = await Assignment.find({
+				AsClass: studentClass.class,
+			});
+			user = await Student.findById(userId);
+			const unitData = await unit.getUnitData(user.myUnits);
+
+			return {
+				studentClass: studentClass.class,
+				classAssignments: classAssignments,
+				classes: classes,
+				user: user,
+				unitData: unitData,
+			};
+		};
+
+		const fetchTeacherData = async () => {
+			const teacherAssignments = await Assignment.find(
+				{ createdBy: req.user.username },
+				{}
+			);
+			user = await Teacher.findById(userId);
+			// const myUnitData = await unit.getMyUnitData(user._id);
+			// myUnitsData: myUnitData,
+
+			return {
+				assignments: teacherAssignments,
+				user: user,
+				classes: classes,
+			};
+		};
+
+		let dashboardData = {};
+		switch (dashType) {
+			// 	case "Admin":
+			// 		dashboardData = await fetchAdminData();
+
+			// 		res.render("dashboardAdmin", { ...commonData, ...dashboardData });
+			// 		break;
+			case "Student":
+				dashboardData = await fetchStudentData();
+				res.render("unitView", { ...commonData, ...dashboardData });
+				break;
+			case "Teacher":
+				dashboardData = await fetchTeacherData();
+				res.render("unitPanel", { ...commonData, ...dashboardData });
+				break;
+			default:
+				res.status(403).send("You do not have access to this page");
+				break;
+		}
+	} catch (error) {
+		console.error("Error accessing the dashboard:", error);
+		res.status(500).send("Internal Server Error");
+	}
+});
 
 router.get("/logout", (req, res) => {
-	// console.log(req.session);
-	// req.logOut();
 	req.session.destroy((err) => {
 		if (err) {
 			console.log("Error destroying session:", err);

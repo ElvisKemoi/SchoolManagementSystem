@@ -2,6 +2,24 @@ const mongoose = require("mongoose");
 const Student = require("./studentModel");
 const Teacher = require("./teacherModel");
 
+const announcementSchema = new mongoose.Schema(
+	{
+		announcementTitle: {
+			type: String,
+			trim: true,
+			required: true,
+		},
+		announcementDetails: {
+			type: String,
+			trim: true,
+			required: true,
+		},
+	},
+	{
+		timestamps: true,
+	}
+);
+
 const unitSchema = new mongoose.Schema(
 	{
 		unitName: {
@@ -21,6 +39,7 @@ const unitSchema = new mongoose.Schema(
 			type: [mongoose.Schema.ObjectId],
 			default: [],
 		},
+		announcements: [announcementSchema],
 		creator: {
 			type: mongoose.Schema.ObjectId,
 			ref: Teacher,

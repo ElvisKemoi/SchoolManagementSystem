@@ -426,7 +426,6 @@
 				</div>
 			</div>
 		</div>
-		<!-- Button trigger modal -->
 
 		<!-- Modal -->
 		<div
@@ -500,6 +499,19 @@
 
 		<!-- CONTENT -->
 		<div id="content" data-uk-height-viewport="expand: true">
+			<% for( let index = 0; index < messages.length; index++ ) { %>
+			<div class="alert alert-primary alert-dismissible fade show" role="alert">
+				<button
+					type="button"
+					class="btn-close"
+					data-bs-dismiss="alert"
+					aria-label="Close"
+				></button>
+				<strong>Alert </strong> <%= messages[index] %>
+			</div>
+
+			<% } %>
+
 			<div class="uk-container uk-container-expand">
 				<div
 					class="uk-grid uk-grid-divider uk-grid-medium uk-child-width-1-2 uk-child-width-1-4@l uk-child-width-1-5@xl"
@@ -773,7 +785,7 @@
 					uk-sortable="handle: .sortable-icon"
 				>
 					<!-- panel -->
-					<div class="uk-width-1-2@l">
+					<div class="uk-width-1-1@l">
 						<div class="uk-card">
 							<div class="uk-card-header">
 								<div class="uk-grid uk-grid-small">
@@ -831,7 +843,7 @@
 					year = date.getUTCFullYear(); %> <% return `${day}, ${month},
 					${year}`; %> <% } %>
 					<!-- panel -->
-					<div class="uk-width-1-2@l">
+					<div class="uk-width-1-1@l">
 						<div class="uk-card">
 							<div class="uk-card-header">
 								<div class="uk-grid uk-grid-small">

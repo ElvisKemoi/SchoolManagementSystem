@@ -1,3 +1,4 @@
+const { $where } = require("../models/studentModel");
 const Unit = require("../models/unitModel");
 const teacher = require("./teachersController");
 
@@ -113,6 +114,78 @@ const unit = {
 		} catch (error) {
 			return { error: error.message };
 		}
+	},
+	getUnit: async (unitId) => {
+		try {
+			const foundUnit = await Unit.findById({ _id: unitId });
+			if (foundUnit) {
+				return foundUnit;
+			} else {
+				throw new Error("Unit Not Found");
+			}
+		} catch (error) {
+			return { error: error.message };
+		}
+	},
+	announcement: {
+		save: async (announcementTitle, announcementDetails, unitId) => {
+			try {
+				const newAnnouncement = {
+					announcementTitle: announcementTitle,
+					announcementDetails: announcementDetails,
+				};
+
+				const updatedUnit = await Unit.findByIdAndUpdate(
+					{ _id: unitId },
+					{ $push: { announcements: newAnnouncement } }
+				);
+				if (updatedUnit) {
+					return true;
+				} else {
+					throw new Error("Announcement Not Saved!");
+				}
+			} catch (error) {
+				return { error: error.message };
+			}
+		},
+		delete: async (announcementId, unitId) => {
+			try {
+				const removedAnnouncement = await Unit.findById({
+					_id: unitId,
+				});
+
+				let updatedAnnouncements = [];
+				for (
+					let index = 0;
+					index < removedAnnouncement.announcements.length;
+					index++
+				) {
+					const element = removedAnnouncement.announcements[index];
+					if (!(element.id === announcementId)) {
+						updatedAnnouncements.push(element);
+					}
+				}
+
+				const theRealUpdatedAnnouncements = await Unit.findByIdAndUpdate(
+					{
+						_id: unitId,
+					},
+					{
+						$set: {
+							announcements: updatedAnnouncements,
+						},
+					}
+				);
+
+				if (theRealUpdatedAnnouncements) {
+					return true;
+				} else {
+					throw new Error("Announcement Not Updated!");
+				}
+			} catch (error) {
+				return { error: error.message };
+			}
+		},
 	},
 };
 module.exports = unit;
