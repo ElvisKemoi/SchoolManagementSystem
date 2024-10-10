@@ -5,6 +5,11 @@ const Class = require("../models/classModel");
 const path = require("path");
 const multer = require("multer");
 const fs = require("fs");
+const unit = require("../functions/unitController");
+const flash = require("connect-flash");
+
+router.use(flash());
+
 const {
 	combineDateTime,
 	formatDate,
@@ -86,12 +91,16 @@ router.post("/upload", upload.single("file"), async (req, res) => {
 				filePath: filePath,
 				createdBy: creator,
 				subject: subject,
+				unit: req.body.unitId,
 				AsClass: asClass,
 				deadline: deadline,
 			});
 
 			const saveStatus = await newAssignment.save();
-
+			const savedToUnit = await unit.assignment.save(
+				saveStatus._id,
+				req.body.unitId
+			);
 			res.status(201).json({
 				message: "File uploaded and saved successfully",
 				assignment: saveStatus,
@@ -147,6 +156,20 @@ router.get("/assignments/:id", async (req, res) => {
 		res.redirect("/login");
 	}
 });
+router.get("/unit/assignments/:id", async (req, res) => {
+	try {
+		const { id } = req.params;
+
+		const theUnitAssignments = await unit.assignment.get(id);
+
+		if (theUnitAssignments == null) {
+			return res.status(404).json({ message: "Cannot find assignment" });
+		}
+		res.json(theUnitAssignments);
+	} catch (err) {
+		res.status(500).json({ message: err.message });
+	}
+});
 
 async function deleteFile(filePath) {
 	return new Promise((resolve) => {
@@ -165,9 +188,9 @@ async function deleteFile(filePath) {
 // 3. Delete assignment by ID
 router.post("/assignments/delete/:id", async (req, res) => {
 	if (req.isAuthenticated()) {
-		const referer = req.headers.referer || req.get("referer");
-		const refererArray = referer.split("/");
-		const originRoute = refererArray[refererArray.length - 1];
+		// const referer = req.headers.referer || req.get("referer");
+		// const refererArray = referer.split("/");
+		// const originRoute = refererArray[refererArray.length - 1];
 
 		try {
 			const deleteStatus = await deleteFile(req.body.filePath);
@@ -177,17 +200,46 @@ router.post("/assignments/delete/:id", async (req, res) => {
 				throw new Error("File deletion failed");
 			}
 
-			const assignment = await Assignment.findByIdAndDelete(req.params.id);
-			if (!assignment) {
-				return res.status(404).json({ message: "Cannot find assignment" });
-			}
+			const removedFromUnit = await unit.assignment.remove(req.params.id);
 
-			res.redirect(`/${originRoute}`);
+			if (!removedFromUnit.error) {
+				// return res.status(404).json({ message: "Cannot find assignment" });
+				req.flash("info", removedFromUnit.error);
+			} else {
+				req.flash("info", removedFromUnit.message);
+			}
+			res.redirect(`/dashboard`);
 		} catch (err) {
-			res.status(500).json({ message: err.message });
+			req.flash("info", err.message);
+			// res.status(500).json({ message: err.message });
 		}
 	} else {
 		res.redirect("/login");
+	}
+});
+router.post("/units/assignments/delete/:id/:unitId", async (req, res) => {
+	try {
+		// Check if deleteStatus is false and throw an error
+
+		const removedFromUnit = await unit.assignment.remove(
+			req.params.id,
+			req.params.unitId
+		);
+
+		const deleteStatus = await deleteFile(req.body.filePath);
+		if (!deleteStatus) {
+			throw new Error("File deletion failed");
+		}
+		if (!removedFromUnit.error) {
+			// Send a success message in JSON format
+			res.json({ success: true, message: "Successfully Deleted Assignment" });
+		} else {
+			// Send the error message in JSON format
+			res.json({ success: false, message: removedFromUnit.message });
+		}
+	} catch (err) {
+		// Send the error message in JSON format
+		res.status(500).json({ success: false, message: err.message });
 	}
 });
 

@@ -34,34 +34,37 @@ router
 	.post("/announcement", async (req, res) => {
 		const { announcementTitle, announcementDetails, unitId } = req.body;
 
-		const savedAnnouncement = await unit.announcement.save(
-			announcementTitle,
-			announcementDetails,
-			unitId
-		);
-		if (!savedAnnouncement.error) {
+		try {
+			const savedAnnouncement = await unit.announcement.save(
+				announcementTitle,
+				announcementDetails,
+				unitId
+			);
+
 			if (savedAnnouncement) {
-				req.flash("info", "Announcement Saved Successfully!");
+				req.flash("info", "Announcement saved successfully!");
+				return res.redirect("/dashboard");
 			} else {
-				req.flash("info", "Announcement Not Saved!");
+				req.flash("error", "Failed to save the announcement.");
+				return res.status(400).redirect("/dashboard");
 			}
-		} else {
-			req.flash("info", savedAnnouncement.error);
+		} catch (error) {
+			req.flash("error", `Error saving announcement: ${error.message}`);
+			return res.status(500).redirect("/dashboard");
 		}
-		res.redirect("/dashboard");
 	})
 	.get("/delete/:unitId/:id", async (req, res) => {
 		const { unitId, id } = req.params;
-
 		const deletedAnnouncement = await unit.announcement.delete(id, unitId);
+
 		if (!deletedAnnouncement.error) {
-			if (deletedAnnouncement) {
-				req.flash("info", "Unit Updated Successfully!");
-			}
+			res.json({
+				success: true,
+				message: "Unit Updated Successfully!",
+				unitId,
+			});
 		} else {
-			req.flash("info", deletedAnnouncement.error);
+			res.json({ success: false, message: deletedAnnouncement.error });
 		}
-		req.flash("origin", unitId);
-		res.redirect("/dashboard");
 	});
 module.exports = router;

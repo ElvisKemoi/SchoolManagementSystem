@@ -42,12 +42,12 @@
 			<%- include("./partials/footer.ejs") %>
 		</div>
 		<div
-			class="uk-width-medium uk-padding-small uk-position-z-index"
+			class="uk-width-large uk-padding-small uk-position-z-index"
 			uk-scrollspy="cls: uk-animation-fade"
 		>
 			<div class="uk-text-center uk-margin">
-				<!-- <img src="img/login-logo.svg" alt="Logo" /> -->
-				Faith Baptist Academy
+				<img src="img/login-logo.svg" alt="Logo" />
+				<h3>Wester Technical College</h3>
 			</div>
 
 			<!-- login -->
@@ -56,13 +56,16 @@
 				<fieldset class="uk-fieldset">
 					<div class="uk-margin-small">
 						<div class="uk-inline uk-width-1-1">
-							<h2>Login as ?</h2>
+							<h2>Login</h2>
 							<span
 								class="uk-form-icon uk-form-icon-flip"
 								data-uk-icon="icon: user"
 							></span>
 						</div>
-						<div class="uk-margin-small">
+
+						<div
+							class="uk-margin-small d-flex gap-4 rounded-pill bg-secondary p-1 py-2 justify-content-around"
+						>
 							<div class="form-check">
 								<input
 									class="form-check-input"
@@ -85,7 +88,7 @@
 									id="flexRadioDefault3"
 								/>
 								<label class="form-check-label" for="flexRadioDefault3">
-									Teacher
+									Lecturer
 								</label>
 							</div>
 							<div class="form-check">

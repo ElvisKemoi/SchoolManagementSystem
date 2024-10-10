@@ -1,6 +1,7 @@
 const { $where } = require("../models/studentModel");
 const Unit = require("../models/unitModel");
 const teacher = require("./teachersController");
+const Assignment = require("../models/assignmentModel");
 
 const unit = {
 	save: async (unitName, unitCode, enrollmentKey, creator) => {
@@ -126,6 +127,63 @@ const unit = {
 		} catch (error) {
 			return { error: error.message };
 		}
+	},
+	assignment: {
+		save: async (assignmentId, unitId) => {
+			try {
+				const saveStatus = await Unit.findByIdAndUpdate(
+					{ _id: unitId },
+					{ $push: { assignments: assignmentId } }
+				);
+			} catch (error) {
+				return { error: error.message };
+			}
+		},
+		get: async (unitId) => {
+			try {
+				const foundUnit = await Unit.findById(
+					{ _id: unitId },
+					{ assignments: true }
+				);
+				let accummulator = [];
+				for (let index = 0; index < foundUnit.assignments.length; index++) {
+					const element = foundUnit.assignments[index];
+					const foundAssignment = await Assignment.findById({
+						_id: element._id,
+					});
+					accummulator.push(foundAssignment);
+				}
+				return accummulator;
+			} catch (error) {
+				return { error: error.message };
+			}
+		},
+		remove: async (assignmentId) => {
+			try {
+				const assignment = await Assignment.findByIdAndDelete({
+					_id: assignmentId,
+				});
+
+				const updatedUnit = await Unit.findByIdAndUpdate(
+					{ _id: assignment.unit },
+					{ $pull: { assignments: assignmentId } },
+					{ new: true }
+				);
+
+				if (!updatedUnit) {
+					throw new Error(
+						"Unit not found or assignment not associated with this unit."
+					);
+				}
+
+				return {
+					message: "Assignment removed successfully.",
+				};
+			} catch (error) {
+				// Handle and return error
+				return { error: `Error removing assignment: ${error.message}` };
+			}
+		},
 	},
 	announcement: {
 		save: async (announcementTitle, announcementDetails, unitId) => {

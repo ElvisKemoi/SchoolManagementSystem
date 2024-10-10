@@ -40,6 +40,10 @@ const unitSchema = new mongoose.Schema(
 			default: [],
 		},
 		announcements: [announcementSchema],
+		assignments: {
+			type: [mongoose.Schema.ObjectId],
+			default: [],
+		},
 		creator: {
 			type: mongoose.Schema.ObjectId,
 			ref: Teacher,

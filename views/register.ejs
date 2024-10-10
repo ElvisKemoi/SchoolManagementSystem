@@ -11,6 +11,12 @@
 			type="text/css"
 			href="https://cdn.jsdelivr.net/npm/uikit@latest/dist/css/uikit.min.css"
 		/> -->
+		<link
+			href="node_modules/bootstrap/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+			crossorigin="anonymous"
+		/>
 		<link rel="stylesheet" type="text/css" href="css/uikit.min.css" />
 	</head>
 	<body
@@ -22,22 +28,22 @@
 		>
 			<%- include("./partials/footer.ejs") %>
 		</div>
-		<div class="uk-width-medium uk-padding-small">
+		<div class="uk-width-large uk-padding-small">
 			<div class="uk-text-center uk-margin">
-				<!-- <img src="img/login-logo.svg" alt="Logo" /> -->
-				Faith Baptist Academy
+				<img src="img/login-logo.svg" alt="Logo" />
+				<h3>Wester Technical College</h3>
 			</div>
 			<!-- REGISTER -->
 			<form class="toggle-class" action="/register" method="post">
 				<fieldset class="uk-fieldset">
 					<div class="uk-inline uk-width-1-1">
-						<h2>Register as ?</h2>
+						<h2>Register</h2>
 						<span
 							class="uk-form-icon uk-form-icon-flip"
 							data-uk-icon="icon: user"
 						></span>
 					</div>
-					<div class="uk-margin-small">
+					<!-- <div class="uk-margin-small">
 						<div class="form-check">
 							<input
 								class="form-check-input"
@@ -60,7 +66,48 @@
 								id="flexRadioDefault3"
 							/>
 							<label class="form-check-label" for="flexRadioDefault3">
-								Teacher
+								Lecturer
+							</label>
+						</div>
+						<div class="form-check">
+							<input
+								class="form-check-input"
+								type="radio"
+								value="Admin"
+								name="userType"
+								id="flexRadioDefault1"
+							/>
+							<label class="form-check-label" for="flexRadioDefault1">
+								Admin
+							</label>
+						</div>
+					</div> -->
+					<div
+						class="uk-margin-small d-flex gap-4 rounded-pill p-1 border border-1 border-muted py-2 justify-content-center"
+					>
+						<div class="form-check">
+							<input
+								class="form-check-input"
+								type="radio"
+								name="userType"
+								id="flexRadioDefault2"
+								value="Student"
+								checked
+							/>
+							<label class="form-check-label" for="flexRadioDefault2">
+								Student
+							</label>
+						</div>
+						<div class="form-check">
+							<input
+								class="form-check-input"
+								type="radio"
+								value="Teacher"
+								name="userType"
+								id="flexRadioDefault3"
+							/>
+							<label class="form-check-label" for="flexRadioDefault3">
+								Lecturer
 							</label>
 						</div>
 						<div class="form-check">
@@ -76,6 +123,7 @@
 							</label>
 						</div>
 					</div>
+
 					<div class="uk-margin-small">
 						<div class="uk-inline uk-width-1-1">
 							<span

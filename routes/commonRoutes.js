@@ -8,6 +8,7 @@ const passport = require("passport");
 const Event = require("../models/events");
 const flash = require("connect-flash");
 const unit = require("../functions/unitController");
+
 router.use(flash());
 
 const {
@@ -138,6 +139,7 @@ router.post("/units", async (req, res) => {
 			userId: req.user._id,
 			userType: dashType,
 			formatDate: formatDate,
+			deadlineReached: deadlineReached,
 			Unit: thisUnitData,
 			messages: req.flash("info"),
 		};
@@ -159,22 +161,23 @@ router.post("/units", async (req, res) => {
 				AsClass: studentClass.class,
 			});
 			user = await Student.findById(userId);
-			const unitData = await unit.getUnitData(user.myUnits);
+			const assignments = await unit.assignment.get(user.myUnits);
 
 			return {
 				studentClass: studentClass.class,
 				classAssignments: classAssignments,
 				classes: classes,
 				user: user,
-				unitData: unitData,
+				assignments: assignments,
 			};
 		};
 
 		const fetchTeacherData = async () => {
 			const teacherAssignments = await Assignment.find(
-				{ createdBy: req.user.username },
+				{ createdBy: req.user.username, unit: unitId },
 				{}
 			);
+
 			user = await Teacher.findById(userId);
 			// const myUnitData = await unit.getMyUnitData(user._id);
 			// myUnitsData: myUnitData,
@@ -263,7 +266,7 @@ router.get("/units", async (req, res) => {
 
 		const fetchTeacherData = async () => {
 			const teacherAssignments = await Assignment.find(
-				{ createdBy: req.user.username },
+				{ createdBy: req.user.username, unit: unitId },
 				{}
 			);
 			user = await Teacher.findById(userId);

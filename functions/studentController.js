@@ -41,6 +41,26 @@ const student = {
 			return { error: error.message };
 		}
 	},
+	unenrollUnit: async (studentId, unitId) => {
+		try {
+			const updatedStudent = await Student.findByIdAndUpdate(
+				studentId,
+				{ $pull: { myUnits: unitId } },
+				{ new: true }
+			);
+
+			if (!updatedStudent) {
+				return {
+					error: "Student not found or already unenrolled from this unit.",
+				};
+			}
+
+			return { success: true, updatedStudent };
+		} catch (error) {
+			return { error: error.message };
+		}
+	},
+
 	getStudent: async (studentId) => {
 		try {
 			const foundStudent = await Student.findById({ _id: studentId });

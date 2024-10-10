@@ -48,6 +48,27 @@ router
 			req.flash("info", addedUnit.error);
 		}
 		res.redirect("/dashboard");
+	})
+	.post("/students/removeunit", async (req, res) => {
+		const { unitId } = req.body;
+
+		try {
+			const result = await student.unenrollUnit(req.user._id, unitId);
+			if (result.error) {
+				// Send JSON error response with status code 400
+				return res.status(400).json({ success: false, error: result.error });
+			}
+
+			// Send JSON success response
+			return res
+				.status(200)
+				.json({ success: true, message: "Unit removed successfully." });
+		} catch (error) {
+			return res.status(500).json({
+				success: false,
+				error: `Error removing unit: ${error.message}`,
+			});
+		}
 	});
 
 module.exports = router;

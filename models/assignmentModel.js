@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Unit = require("./unitModel");
 
 const assignmentSchema = new mongoose.Schema(
 	{
@@ -10,6 +11,7 @@ const assignmentSchema = new mongoose.Schema(
 
 			required: true,
 		},
+		unit: { type: mongoose.Schema.ObjectId, required: false, ref: Unit },
 
 		subject: { type: String, required: true },
 		AsClass: { type: String, required: true },
