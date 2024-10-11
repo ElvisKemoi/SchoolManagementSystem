@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const unit = require("../functions/unitController");
+const unit = require("../controllers/unitController");
 const flash = require("connect-flash");
 
 router.use(flash());

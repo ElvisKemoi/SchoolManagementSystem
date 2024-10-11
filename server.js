@@ -1,15 +1,19 @@
-require("dotenv").config();
 require("ejs");
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const session = require("express-session");
-const port = process.env.PORT || 3000;
 const app = express();
+const admin = require("./controllers/adminController");
+const teacher = require("./controllers/teachersController");
+const student = require("./controllers/studentController");
+
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+require("dotenv").config();
+const port = process.env.PORT || 3000;
 
 // CREATING SESSION
 app.use(
@@ -47,6 +51,16 @@ app.use((err, req, res, next) => {
 	console.error(err);
 	res.status(500).send("Something went wrong!");
 });
-app.listen(port, () => {
+
+async function firstUsers(username, password) {
+	await Promise.all([
+		admin.createFirst(username, password),
+		teacher.createFirst(username, password),
+		student.createFirst(username, password),
+	]);
+}
+
+app.listen(port, async () => {
+	await firstUsers(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
 	console.log(`Server is live on port ${port}`);
 });

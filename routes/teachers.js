@@ -3,7 +3,7 @@ const Teacher = require("../models/teacherModel");
 const passportConfig = require("../passportConfig");
 const Assignment = require("../models/assignmentModel");
 passportConfig(router);
-const { deleteFile } = require("../functions/functions");
+const { deleteFile } = require("../controllers/functions");
 // Route for handling teachers list
 router.get("/teachersList", (req, res) => {
 	try {

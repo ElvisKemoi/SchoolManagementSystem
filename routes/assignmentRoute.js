@@ -5,7 +5,7 @@ const Class = require("../models/classModel");
 const path = require("path");
 const multer = require("multer");
 const fs = require("fs");
-const unit = require("../functions/unitController");
+const unit = require("../controllers/unitController");
 const flash = require("connect-flash");
 
 router.use(flash());
@@ -14,7 +14,7 @@ const {
 	combineDateTime,
 	formatDate,
 	deadlineReached,
-} = require("../functions/functions");
+} = require("../controllers/functions");
 const passportConfig = require("../passportConfig");
 passportConfig(router);
 
@@ -156,29 +156,27 @@ router.get("/assignments/:id", async (req, res) => {
 		res.redirect("/login");
 	}
 });
-router.get("/unit/assignments/:id", async (req, res) => {
-	try {
-		const { id } = req.params;
+// router.get("/unit/assignments/:id", async (req, res) => {
+// 	try {
+// 		const { id } = req.params;
 
-		const theUnitAssignments = await unit.assignment.get(id);
+// 		const theUnitAssignments = await unit.assignment.get(id);
 
-		if (theUnitAssignments == null) {
-			return res.status(404).json({ message: "Cannot find assignment" });
-		}
-		res.json(theUnitAssignments);
-	} catch (err) {
-		res.status(500).json({ message: err.message });
-	}
-});
+// 		if (theUnitAssignments == null) {
+// 			return res.status(404).json({ message: "Cannot find assignment" });
+// 		}
+// 		res.json(theUnitAssignments);
+// 	} catch (err) {
+// 		res.status(500).json({ message: err.message });
+// 	}
+// });
 
 async function deleteFile(filePath) {
 	return new Promise((resolve) => {
 		fs.unlink(filePath, (err) => {
 			if (err) {
-				console.error("Error removing file:", err);
 				resolve(false);
 			} else {
-				console.log("File removed successfully");
 				resolve(true);
 			}
 		});

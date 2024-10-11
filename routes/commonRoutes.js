@@ -7,7 +7,7 @@ const Assignment = require("../models/assignmentModel");
 const passport = require("passport");
 const Event = require("../models/events");
 const flash = require("connect-flash");
-const unit = require("../functions/unitController");
+const unit = require("../controllers/unitController");
 
 router.use(flash());
 
@@ -16,7 +16,7 @@ const {
 	countMembers,
 	formatDate,
 	deadlineReached,
-} = require("../functions/functions");
+} = require("../controllers/functions");
 
 const passportConfig = require("../passportConfig");
 passportConfig(router);
@@ -161,7 +161,7 @@ router.post("/units", async (req, res) => {
 				AsClass: studentClass.class,
 			});
 			user = await Student.findById(userId);
-			const assignments = await unit.assignment.get(user.myUnits);
+			const assignments = await Assignment.find({ unit: unitId }, {});
 
 			return {
 				studentClass: studentClass.class,

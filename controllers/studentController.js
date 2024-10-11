@@ -2,6 +2,25 @@ const Student = require("../models/studentModel");
 const unit = require("./unitController");
 
 const student = {
+	createFirst: async (username, password) => {
+		try {
+			const adminFound = await Student.find({ username: username });
+
+			if (!(adminFound.length > 0)) {
+				Student.register({ username: username }, password, (err, user) => {
+					if (err) {
+						throw new Error(err.message);
+					} else {
+						return true;
+					}
+				});
+			} else {
+				return true;
+			}
+		} catch (error) {
+			return { error: error.message };
+		}
+	},
 	enrollUnit: async (studentId, unitId, enrollmentKey) => {
 		try {
 			const theUnitProtected = await unit.isProtected(unitId);

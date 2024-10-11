@@ -2,7 +2,7 @@ const router = require("express").Router();
 const flash = require("connect-flash");
 
 const Student = require("../models/studentModel");
-const student = require("../functions/studentController");
+const student = require("../controllers/studentController");
 
 router.use(flash());
 

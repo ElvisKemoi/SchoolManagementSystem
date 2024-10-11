@@ -18,7 +18,7 @@ async function getEvents() {
 			const formattedDate = formatDate(element.eventDate);
 
 			li.innerHTML = `
-            <div><div class="uk-card uk-card-default uk-card-small" style="box-shadow: none" ><div class="uk-card-media-top">
+            <div><div class="uk-card uk-card-default uk-card-small uk-background-dark" style="box-shadow: none" ><div class="uk-card-media-top">
 												</div><div class="uk-card-header"><div class="uk-grid-small uk-flex-middle"
 														data-uk-grid
 													>
@@ -28,7 +28,7 @@ async function getEvents() {
 																alt=""
 																width="40"
 																height="40"
-																src="https://unsplash.it/60/60/?random"
+																src="img/avatar.svg"
 															/>
 														</div>
 														<div class="uk-width-expand">

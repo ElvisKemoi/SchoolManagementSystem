@@ -139,20 +139,28 @@ const unit = {
 				return { error: error.message };
 			}
 		},
-		get: async (unitId) => {
+		get: async (myUnits, thisUnit) => {
 			try {
-				const foundUnit = await Unit.findById(
-					{ _id: unitId },
-					{ assignments: true }
-				);
 				let accummulator = [];
-				for (let index = 0; index < foundUnit.assignments.length; index++) {
-					const element = foundUnit.assignments[index];
-					const foundAssignment = await Assignment.findById({
-						_id: element._id,
-					});
-					accummulator.push(foundAssignment);
+
+				for (let index = 0; index < myUnits.length; index++) {
+					const element = myUnits[index];
+					const foundUnit = await Unit.findById(
+						{ _id: element },
+						{ assignments: true }
+					);
+					for (let index = 0; index < foundUnit.assignments.length; index++) {
+						const element = foundUnit.assignments[index];
+						const foundAssignment = await Assignment.findById({
+							_id: element._id,
+							unit: thisUnit,
+						});
+						accummulator.push(foundAssignment);
+					}
 				}
+				// myUnits.forEach(async (thisUnit) => {
+
+				// });
 				return accummulator;
 			} catch (error) {
 				return { error: error.message };
