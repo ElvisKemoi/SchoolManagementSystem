@@ -76,8 +76,6 @@ async function getTeachers() {
 						</div>
             `;
 			teachersList.appendChild(item);
-
-			console.log(element);
 		});
 	} catch (error) {
 		console.error("There has been a problem with your fetch operation:", error);

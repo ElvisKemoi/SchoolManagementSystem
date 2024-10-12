@@ -7,7 +7,7 @@ const app = express();
 const admin = require("./controllers/adminController");
 const teacher = require("./controllers/teachersController");
 const student = require("./controllers/studentController");
-
+const storage = require("./controllers/storageControllers");
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -58,9 +58,18 @@ async function firstUsers(username, password) {
 		teacher.createFirst(username, password),
 		student.createFirst(username, password),
 	]);
+	return true;
+}
+
+async function createAssignments() {
+	return await storage.createAssignments();
 }
 
 app.listen(port, async () => {
-	await firstUsers(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
+	const creations = await Promise.all([
+		firstUsers(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD),
+		createAssignments(),
+	]);
+
 	console.log(`Server is live on port ${port}`);
 });

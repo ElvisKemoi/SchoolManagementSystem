@@ -28,7 +28,7 @@ const teacher = {
 
 			return foundTeacher.username;
 		} catch (error) {
-			return { error: error.message };
+			return "Lecturer Not Available";
 		}
 	},
 };

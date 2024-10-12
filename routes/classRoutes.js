@@ -20,20 +20,18 @@ router.get("/classes", async (req, res) => {
 // Route to create a new class
 router.post("/classes", async (req, res) => {
 	try {
-		const { className, classCode, classTeacher } = req.body;
+		const { className, classCode } = req.body;
 
 		// Create a new class
 		const newClass = new Class({
 			className: className,
 			classCode: className,
-			classTeacher: classTeacher,
 		});
 
 		// Save the class to the database
 		const savedClass = await newClass.save();
 
-		// Send a response back to the client
-		// res.status(201).json(savedClass);
+		req.flash("info", "Class Added Successfully!");
 		res.redirect("/dashboard");
 	} catch (error) {
 		// Handle errors

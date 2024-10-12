@@ -28,7 +28,7 @@ async function getEvents() {
 																alt=""
 																width="40"
 																height="40"
-																src="https://unsplash.it/60/60/?random"
+																src="img/avatar.svg"
 															/>
 														</div>
 														<div class="uk-width-expand">

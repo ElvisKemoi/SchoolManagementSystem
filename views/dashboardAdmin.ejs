@@ -52,44 +52,7 @@
 						</div>
 						<ul class="uk-navbar-nav uk-visible@m">
 							<li><a href="#">Accounts</a></li>
-							<!-- <li>
-								<a href="#"
-									>Settings <span data-uk-icon="icon: triangle-down"></span
-								></a>
-								<div class="uk-navbar-dropdown">
-									<ul class="uk-nav uk-navbar-dropdown-nav">
-										<li class="uk-nav-header">YOUR ACCOUNT</li>
-										<li>
-											<a href="#"
-												><span data-uk-icon="icon: info"></span> Summary</a
-											>
-										</li>
-										<li>
-											<a href="#"
-												><span data-uk-icon="icon: refresh"></span> Edit</a
-											>
-										</li>
-										<li>
-											<a href="#"
-												><span data-uk-icon="icon: settings"></span>
-												Configuration</a
-											>
-										</li>
-										<li class="uk-nav-divider"></li>
-										<li>
-											<a href="#"
-												><span data-uk-icon="icon: image"></span> Your Data</a
-											>
-										</li>
-										<li class="uk-nav-divider"></li>
-										<li>
-											<a href="/logout"
-												><span data-uk-icon="icon: sign-out"></span> Logout</a
-											>
-										</li>
-									</ul>
-								</div>
-							</li> -->
+							
 						</ul>
 						<div class="uk-navbar-item uk-visible@s">
 							<form action="dashboard.html" class="uk-search uk-search-default">
@@ -112,14 +75,7 @@
 									data-uk-tooltip
 								></a>
 							</li>
-							<li>
-								<a
-									href="#"
-									data-uk-icon="icon: settings"
-									title="Settings"
-									data-uk-tooltip
-								></a>
-							</li>
+							
 							<li>
 								<a
 									href="/logout"
@@ -306,6 +262,7 @@
 		<!-- /LEFT BAR -->
 		<!-- CONTENT -->
 		<div id="content" data-uk-height-viewport="expand: true">
+			<%- include("./partials/alerts.ejs") %>
 			<div class="uk-container uk-container-expand">
 				<div
 					class="uk-grid uk-grid-divider uk-grid-medium uk-child-width-1-2 uk-child-width-1-4@l uk-child-width-1-5@xl"
@@ -462,7 +419,7 @@
 						</button>
 							<div class="mb-3">
 								<label for="className" class="form-label"
-									>Class Name </label
+									>Lecture hall/Class Name </label
 								>
 								<input
 									type="text"
@@ -476,17 +433,7 @@
 							</div>
 
 							
-							<div class="mb-3">
-								<label for="classTeacher">Class Teacher (optional)- you can update this later   </label>
-								<select class="form-select" aria-label="Default select example" name="classTeacher">
-									
-									<option selected disabled>Select Class Teacher</option>
-									<% allTeachers.forEach((teacher)=>{ %> 
-										<option value="<%= teacher.username%>"  > <%= teacher.username %> </option>
-									<% }) %>
-								
-								</select>
-							</div>
+							
 						
 							
 							
@@ -495,8 +442,81 @@
 					</form>
 				</div>
 
+					<!-- Add Lecturer Modal -->
+				<div
+				class="modal fade"
+				id="addLectureModal"
+				tabindex="-1"
+				role="dialog"
+				aria-labelledby="modalTitleId"
+				aria-hidden="true"
+				>
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<form action="/teachers/add" method="post" class="" >
+								<div class="modal-header">
+									<h5 class="modal-title" id="modalTitleId">
+										Add Lecturer
+									</h5>
+									<button
+										type="button"
+										class="btn-close"
+										data-bs-dismiss="modal"
+										aria-label="Close"
+									></button>
+								</div>
+								<div class="modal-body">
+									<div class="container-fluid">
+										
+										<div class="mb-3">
+											<label for="username" class="form-label"
+												>Username</label
+											>
+											<input
+												type="text"
+												class="form-control"
+												id="username"
+												name="username"
+												required 
+												
+											/>
+										</div>
+										<div class="mb-3">
+											<p><strong>NB: </strong>Lecturers are able to change their password from their portal.</p>
+											<label for="password" class="form-label"
+												>First Password</label
+											>
+											<input
+												type="password"
+												class="form-control"
+												id="password"
+												name="password"
+												required 
+												
+											/>
+											
+										</div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button
+									type="button"
+									class="btn btn-secondary"
+									data-bs-dismiss="modal"
+									>
+									Close
+								</button>
+									<button type="submit" class="btn btn-primary">Save</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				
+			
+
 				<!-- Articles -->
-				<section class="uk-section uk-section-muted">
+				<section class="uk-section uk-section-muted me-3">
 				<div class="uk-container" id="UpcomingEvents">
 					<h2 class="uk-text-bold">
 						Upcoming Events
@@ -551,18 +571,139 @@
 				</section>
 			
 				<div
-					class="uk-grid uk-grid-medium"
+					class="uk-grid uk-grid-medium "
 					data-uk-grid
 					uk-sortable="handle: .sortable-icon"
 				>
 
+				<!-- panel -->
+				<div class="uk-width-1-1@l my-4" id="classes" >
+					<div class="uk-card">
+						<div class="uk-card-header">
+							<div class="uk-grid uk-grid-small">
+								<div class="uk-width-auto">
+									<h4>Lecturers</h4>
+								</div>
+								
+								<div class="uk-width-expand uk-text-right panel-icons">
+									<a
+										href="#"
+										class="uk-icon-link sortable-icon btn btn-outline-primary"
+										title="Move"
+										data-uk-tooltip
+										
+									>
+									<span data-uk-icon="icon: move" class="uk-text-success "></span>
+								</a>
+					
+									<a
+										href="#"
+										class=" btn btn-outline-primary"
+										title="Add Lecturer"
+										data-uk-tooltip
+										data-bs-toggle="modal"
+										data-bs-target="#addLectureModal"
+										
+									><span data-uk-icon="icon: plus" class="uk-text-success "></span></a>
+									<a
+											href="/dashboard"
+											class="uk-icon-link uk-text-success btn btn-outline-primary"
+											title="Refresh"
+											data-uk-tooltip
+										>
+										<span data-uk-icon="icon: refresh" class="uk-text-success "></a>
+									
+								</div>
+							</div>
+						</div>
+						<div>
+							
+							<div
+								class="uk-child-width-1-3@m uk-grid-small uk-grid-match"
+								uk-grid
+								id="homeClassCards"
+								
+							>
+							<% allTeachers.forEach(((teacher)=> {%> 
+								<div class="nature-card">
+								<div class="uk-card uk-card-small uk-card-default">
+									<div class="uk-card-header">
+										<div class="uk-grid uk-grid-small uk-text-small" data-uk-grid>
+											<div class="uk-width-expand">
+												<span class="cat-txt">  Lecturer </span>
+											</div>
+											<div class="uk-width-auto uk-text-right uk-text-muted"  
+											
+											title="Joined"
+														data-uk-tooltip>
+												<%let localTimeString = new Date(teacher.createdAt).toLocaleDateString();%>
+
+												<span data-uk-icon="icon:clock; ratio: 0.8"></span>  <%=localTimeString%>
+											</div>
+										</div>
+									</div>
+									<div class="uk-card-body">
+									
+										<h6 class="uk-margin-small-bottom uk-margin-remove-adjacent uk-text-bold"><%= teacher.username  %></h6>
+									</div>
+									<div class="uk-card-footer">
+										<div class="uk-grid uk-grid-small uk-grid-divider uk-flex uk-flex-middle" data-uk-grid>
+											<div class="uk-width-expand uk-text-small text-nowrap overflow-hidden" 
+											data-uk-tooltip
+											title="Class Members"
+											>
+												clas.members  Members  
+											</div>
+										
+											<div class="uk-width-auto uk-text-right">
+												<div class="uk-width-auto">
+													<div class="uk-inline">
+														<a data-uk-icon="icon:more-vertical"></a>
+														<div data-uk-dropdown="mode: click; pos:top-right">
+															<ul class="uk-nav uk-dropdown-nav">
+																<li class="uk-nav-header text-center">Actions</li>
+																<li><a href="#"><span data-uk-icon="icon: lifesaver; ratio: 0.9"></span> Change Password</a></li>
+																<li>
+																	<a href="#" class="uk-text-danger">
+																		<span data-uk-icon="icon: trash; ratio: 0.9"></span>
+																		<form id="deletelec-<%=teacher._id%>" action="/teachers/delete/<%=teacher._id%>" method="post">
+																			<button
+																			type="button"
+																			class="uk-icon-link btn btn-outline-danger "
+																			title="Remove Lecturer"
+																			data-uk-tooltip
+																			
+																			onclick="confirmClassDelete('deletelec-<%=teacher._id%>')"
+																			>
+																			Delete Lecturer
+																			</button>
+																		</form>
+																	</a>
+																</li>
+															</ul>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+								<%})) %> 
+								
+								
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /panel -->
 				<!-- panel -->
 				<div class="uk-width-1-1@l " id="classes" >
 					<div class="uk-card">
 						<div class="uk-card-header">
 							<div class="uk-grid uk-grid-small">
 								<div class="uk-width-auto">
-									<h4>Classes</h4>
+									<h4>Lecture Rooms/Classes</h4>
 								</div>
 								
 								<div class="uk-width-expand uk-text-right panel-icons">
@@ -577,7 +718,7 @@
 									<a
 										href="#modal-center1"
 										class="uk-icon-link"
-										title="Add Class"
+										title="Add Lecture room"
 										data-uk-tooltip
 										data-uk-toggle
 										
@@ -608,66 +749,44 @@
 								
 							>
 							<% classes.forEach(((clas)=> {%> 
-								<div>
-								<div class="uk-card uk-card-small uk-card-default">
-									<div class="uk-card-header">
-										<div class="uk-grid uk-grid-small uk-text-small" data-uk-grid>
-											<div class="uk-width-expand">
-												<span class="cat-txt"> <%= clas.className %> </span>
+								
+									<div class="nature-card">
+										<div class="uk-card uk-card-small uk-card-default ">
+											<div class="uk-card-header">
+												<div class="uk-grid uk-grid-small uk-text-small" data-uk-grid>
+													<div class="uk-width-expand">
+														<span class="cat-txt"> <%= clas.className %> </span>
+													</div>
+													<div class="uk-width-auto uk-text-right uk-text-muted"  
+													
+													title="Date Created"
+																data-uk-tooltip>
+														<% let localTimeString = new Date(clas.createdAt).toLocaleDateString(); %>
+
+														<span data-uk-icon="icon:clock; ratio: 0.8"></span> <%= localTimeString %>
+													</div>
+												</div>
 											</div>
-											<div class="uk-width-auto uk-text-right uk-text-muted"  
-											
-											title="Date Created"
-														data-uk-tooltip>
-												<% let localTimeString = new Date(clas.createdAt).toLocaleDateString(); %>
-
-												<span data-uk-icon="icon:clock; ratio: 0.8"></span> <%= localTimeString %>
-											</div>
-										</div>
-									</div>
-									<div class="uk-card-body">
-										<h6 class="uk-margin-small-bottom uk-margin-remove-adjacent uk-text-bold"><%=clas.classTeacher %></h6>
-									</div>
-									<div class="uk-card-footer">
-										<div class="uk-grid uk-grid-small uk-grid-divider uk-flex uk-flex-middle" data-uk-grid>
-											<div class="uk-width-expand uk-text-small text-nowrap overflow-hidden" 
-											data-uk-tooltip
-											title="Class Members"
-											>
-												<%= clas.members %> Members  
-											</div>
-											<!-- <div class="uk-width-auto uk-text-right">
-												<a href="#" data-uk-tooltip="title: Twitter" class="uk-icon-link" data-uk-icon="icon:twitter; ratio: 0.8"></a>
-												<a href="#" data-uk-tooltip="title: Instagram" class="uk-icon-link" data-uk-icon="icon:instagram; ratio: 0.8"></a>
-												<a href="#" data-uk-tooltip="title: Behance" class="uk-icon-link" data-uk-icon="icon:behance; ratio: 0.8"></a>
-												<a href="#" data-uk-tooltip="title: Pinterest" class="uk-icon-link" data-uk-icon="icon:pinterest; ratio: 0.8"></a>
-											</div> -->
-											<div class="uk-width-auto uk-text-right">
-
-											
-
-
-
-
-											<form id="<%= clas._id %>" action="/classes/delete/<%= clas._id %>" method="post">
-												<button
-												type="button"
-												class="uk-icon-link"
-												title="Remove Class"
-												data-uk-tooltip
-												data-uk-icon="icon: trash"
-												onclick="confirmClassDelete('<%= clas._id %>')"
-												></button>
-
-										</form>
+											<div class="uk-card-footer">
+												<div class="uk-grid uk-grid-small uk-grid-divider uk-flex uk-flex-middle" data-uk-grid>
+													<div class="uk-width-auto uk-text-right ms-auto">
+													<form id="<%= clas._id %>" action="/classes/delete/<%= clas._id %>" method="post">
+														<button
+														type="button"
+														class="uk-icon-link"
+														title="Remove Class"
+														data-uk-tooltip
+														data-uk-icon="icon: trash"
+														onclick="confirmClassDelete('<%= clas._id %>')"
+														></button>
+													</form>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-							</div>
+								
 								<%})) %> 
-								
-								
 							</div>
 						</div>
 					</div>
@@ -949,172 +1068,7 @@
 		</div>
 		<!-- /CONTENT -->
 		<!-- OFFCANVAS -->
-		<div id="offcanvas-nav" data-uk-offcanvas="flip: true; overlay: true">
-			<div
-				class="uk-offcanvas-bar uk-offcanvas-bar-animation uk-offcanvas-slide"
-			>
-				<button
-					class="uk-offcanvas-close uk-close uk-icon"
-					type="button"
-					data-uk-close
-				></button>
-				<div class="left-logo uk-flex uk-flex-middle">
-					<div><h2 class="uk-nav-header">School Logo</h2></div>
-					<!-- <img class="custom-logo" src="img/dashboard-logo.svg" alt="" /> -->
-				</div>
-				<div class="left-content-box content-box-dark">
-					<img src="img/avatar.svg" alt="" class="uk-border-circle profile-img" />
-					<h4 class="uk-text-center uk-margin-remove-vertical text-light">
-						<%= userName %>
-					</h4>
-	
-					<div class="uk-position-relative uk-text-center uk-display-block">
-						<a
-							href="#"
-							class="uk-text-small uk-text-muted uk-display-block uk-text-center"
-							data-uk-icon="icon: triangle-down; ratio: 0.7"
-							><%= userType %></a
-						>
-						<!-- user dropdown -->
-						<div
-							class="uk-dropdown user-drop"
-							data-uk-dropdown="mode: click; pos: bottom-center; animation: uk-animation-slide-bottom-small; duration: 150"
-						>
-							<ul class="uk-nav uk-dropdown-nav uk-text-left">
-								<li>
-									<a href="#"><span data-uk-icon="icon: info"></span> Summary</a>
-								</li>
-								<li>
-									<a href="#"><span data-uk-icon="icon: refresh"></span> Edit</a>
-								</li>
-								<li>
-									<a href="#"
-										><span data-uk-icon="icon: settings"></span> Configuration</a
-									>
-								</li>
-								<li class="uk-nav-divider"></li>
-								<li>
-									<a href="#"
-										><span data-uk-icon="icon: image"></span> Your Data</a
-									>
-								</li>
-								<li class="uk-nav-divider"></li>
-								<li>
-									<a href="/logout"
-										><span data-uk-icon="icon: sign-out"></span> Sign Out</a
-									>
-								</li>
-							</ul>
-						</div>
-						<!-- /user dropdown -->
-					</div>
-				</div>
-	
-				<div class="left-nav-wrap">
-					<ul class="uk-nav uk-nav-default uk-nav-parent-icon" data-uk-nav>
-						<li class="uk-nav-header">ACTIONS</li>
-						<li>
-							<a href="#UpcomingEvents"
-								><span
-									data-uk-icon="icon: thumbnails"
-									class="uk-margin-small-right"
-								></span
-								>Upcoming Events</a
-							>
-						</li>
-	
-					
-						<li>
-							<a href="/teachersList"
-								><span
-									data-uk-icon="icon: users"
-									class="uk-margin-small-right"
-								></span
-								>Lecturers</a
-							>
-						</li>
-	
-						
-						<li>
-							<a href="#classes"
-								><span
-									data-uk-icon="icon: thumbnails"
-									class="uk-margin-small-right"
-								></span
-								>Classes</a
-							>
-						</li>
-					</ul>
-					<div class="left-content-box uk-margin-top">
-						<h5>Daily Reports</h5>
-						<div>
-							<span class="uk-text-small">Traffic <small>(+50)</small></span>
-							<progress class="uk-progress" value="50" max="100"></progress>
-						</div>
-						<div>
-							<span class="uk-text-small">Income <small>(+78)</small></span>
-							<progress
-								class="uk-progress success"
-								value="78"
-								max="100"
-							></progress>
-						</div>
-						<div>
-							<span class="uk-text-small">Feedback <small>(-12)</small></span>
-							<progress
-								class="uk-progress warning"
-								value="12"
-								max="100"
-							></progress>
-						</div>
-					</div>
-				</div>
-				<div class="bar-bottom">
-					<ul
-						class="uk-subnav uk-flex uk-flex-center uk-child-width-1-5"
-						data-uk-grid
-					>
-						<li>
-							<a
-								href="#"
-								class="uk-icon-link"
-								data-uk-icon="icon: home"
-								title="Home"
-								data-uk-tooltip
-							></a>
-						</li>
-						<li>
-							<a
-								href="#"
-								class="uk-icon-link"
-								data-uk-icon="icon: settings"
-								title="Settings"
-								data-uk-tooltip
-							></a>
-						</li>
-						<li>
-							<a
-								href="#"
-								class="uk-icon-link"
-								data-uk-icon="icon: social"
-								title="Social"
-								data-uk-tooltip
-							></a>
-						</li>
-	
-						<li>
-							<a
-								href="/logout"
-								class="uk-icon-link"
-								data-uk-tooltip="Sign out"
-								data-uk-icon="icon: sign-out"
-							></a>
-						</li>
-					</ul>
-				</div>
-			
-			</div>
-		</div>
+		<%- include("./partials/adminOffcanvas.ejs")  %>
 		<!-- /OFFCANVAS -->
 
 		<!-- JS FILES -->

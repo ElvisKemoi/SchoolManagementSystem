@@ -166,7 +166,7 @@ router.post("/units", async (req, res) => {
 			return {
 				studentClass: studentClass.class,
 				classAssignments: classAssignments,
-				classes: classes,
+
 				user: user,
 				assignments: assignments,
 			};

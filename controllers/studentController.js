@@ -23,10 +23,31 @@ const student = {
 	},
 	enrollUnit: async (studentId, unitId, enrollmentKey) => {
 		try {
-			const theUnitProtected = await unit.isProtected(unitId);
+			const foundUnits = await Student.findById({
+				_id: studentId,
+			});
 
-			if (theUnitProtected) {
-				if (theUnitProtected === enrollmentKey) {
+			if (!foundUnits.myUnits.includes(unitId)) {
+				const theUnitProtected = await unit.isProtected(unitId);
+
+				if (theUnitProtected) {
+					if (theUnitProtected === enrollmentKey) {
+						const updatedStudent = await Student.findByIdAndUpdate(
+							{ _id: studentId },
+							{ $push: { myUnits: unitId } },
+							{ new: true }
+						);
+						const addedMember = await unit.addMember(unitId, studentId);
+
+						if (updatedStudent && addedMember) {
+							return true;
+						} else {
+							throw new Error("Unit Not Added!");
+						}
+					} else {
+						throw new Error("Wrong Enrollment Key!");
+					}
+				} else {
 					const updatedStudent = await Student.findByIdAndUpdate(
 						{ _id: studentId },
 						{ $push: { myUnits: unitId } },
@@ -39,22 +60,9 @@ const student = {
 					} else {
 						throw new Error("Unit Not Added!");
 					}
-				} else {
-					throw new Error("Wrong Enrollment Key!");
 				}
 			} else {
-				const updatedStudent = await Student.findByIdAndUpdate(
-					{ _id: studentId },
-					{ $push: { myUnits: unitId } },
-					{ new: true }
-				);
-				const addedMember = await unit.addMember(unitId, studentId);
-
-				if (updatedStudent && addedMember) {
-					return true;
-				} else {
-					throw new Error("Unit Not Added!");
-				}
+				return true;
 			}
 		} catch (error) {
 			return { error: error.message };

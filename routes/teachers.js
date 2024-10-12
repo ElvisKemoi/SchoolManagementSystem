@@ -3,8 +3,11 @@ const Teacher = require("../models/teacherModel");
 const passportConfig = require("../passportConfig");
 const Assignment = require("../models/assignmentModel");
 passportConfig(router);
+const flash = require("connect-flash");
 const { deleteFile } = require("../controllers/functions");
 // Route for handling teachers list
+
+router.use(flash());
 router.get("/teachersList", (req, res) => {
 	try {
 		if (req.isAuthenticated()) {
@@ -34,7 +37,8 @@ router.post("/teachers/add", async (req, res) => {
 					console.log(err);
 					// res.redirect("/register");
 				} else {
-					res.redirect("/teachersList");
+					req.flash("info", "Lecturer Added Successfully!");
+					res.redirect("/dashboard");
 					// passport.authenticate(`${userType.toLowerCase()}-local`)(
 					// 	req,
 					// 	res,
@@ -127,15 +131,18 @@ router.post("/teachers/delete/:id", async (req, res) => {
 
 				// console.log(allAssignments);
 			} else {
-				console.log("No teacher found with the given ID");
+				req.flash("info", "No teacher found with the given ID");
 			}
 
 			const theTeacher = await Teacher.findByIdAndDelete(req.params.id);
 
 			if (!theTeacher) {
-				return res.status(404).json({ error: "Teacher not found" });
+				req.flash("info", "Teacher not found");
+				// return res.status(404).json({ error: "Teacher not found" });
+			} else {
+				req.flash("info", "Teacher Deleted Successfully");
 			}
-			res.redirect("/teachersList");
+			res.redirect("/dashboard");
 		} else {
 			res.status(401).send("Unauthorized Action");
 		}

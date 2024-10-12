@@ -7,12 +7,14 @@ const unit = {
 	save: async (unitName, unitCode, enrollmentKey, creator) => {
 		try {
 			enrollmentKey = enrollmentKey === "" ? undefined : enrollmentKey;
+			const creatorName = await teacher.getName(creator);
 
 			const newUnit = new Unit({
 				unitName: unitName,
 				unitCode: unitCode,
 				enrollmentKey: enrollmentKey,
 				creator: creator,
+				creatorName: creatorName,
 			});
 			const savedUnit = await newUnit.save();
 			if (savedUnit) {
@@ -61,10 +63,6 @@ const unit = {
 			for (let index = 0; index < unitsArray.length; index++) {
 				const element = unitsArray[index];
 				let theUnit = await Unit.findById({ _id: element });
-				// TODO ADD CREATOR NAME
-
-				theUnit["creatorName"] = await teacher.getName(theUnit.creator);
-
 				theUnits.push(theUnit);
 			}
 
@@ -88,13 +86,14 @@ const unit = {
 	getSearch: async (searchValue) => {
 		try {
 			let theRealResults = [];
-			const results = await Unit.find({});
-			for (let index = 0; index < results.length; index++) {
-				const element = results[index];
+			let results = await Unit.find({});
 
+			for (let index = 0; index < results.length; index++) {
+				let element = results[index];
 				if (
 					element.unitName.toLowerCase().includes(searchValue.toLowerCase()) ||
-					element.unitCode.toLowerCase().includes(searchValue.toLowerCase())
+					element.unitCode.toLowerCase().includes(searchValue.toLowerCase()) ||
+					element.creatorName.toLowerCase().includes(searchValue.toLowerCase)
 				) {
 					theRealResults.push(element);
 				}

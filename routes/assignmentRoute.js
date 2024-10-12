@@ -21,6 +21,14 @@ passportConfig(router);
 // Assignments
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
+		const assignmentDir = "Assignments";
+		const assignmentGivenDir = `${assignmentDir}/Given`;
+		if (!fs.existsSync(assignmentDir)) {
+			fs.mkdirSync(assignmentDir);
+		}
+		if (!fs.existsSync(assignmentGivenDir)) {
+			fs.mkdirSync(assignmentGivenDir);
+		}
 		cb(null, "Assignments/Given");
 	},
 	filename: (req, file, cb) => {
@@ -46,28 +54,28 @@ const upload = multer({
 	},
 });
 
-router.get("/assignments", async (req, res) => {
-	if (req.isAuthenticated()) {
-		try {
-			const [allClasses, assignments] = await Promise.all([
-				Class.find(),
-				Assignment.find(),
-			]);
+// router.get("/assignments", async (req, res) => {
+// 	if (req.isAuthenticated()) {
+// 		try {
+// 			const [allClasses, assignments] = await Promise.all([
+// 				Class.find(),
+// 				Assignment.find(),
+// 			]);
 
-			res.render("assignmentsPanel", {
-				classes: allClasses,
-				assignments: assignments,
-				formatDate: formatDate,
-				deadlineReached: deadlineReached,
-			});
-		} catch (err) {
-			console.error(err);
-			res.status(500).send("Internal Server Error");
-		}
-	} else {
-		res.redirect("/login");
-	}
-});
+// 			res.render("assignmentsPanel", {
+// 				classes: allClasses,
+// 				assignments: assignments,
+// 				formatDate: formatDate,
+// 				deadlineReached: deadlineReached,
+// 			});
+// 		} catch (err) {
+// 			console.error(err);
+// 			res.status(500).send("Internal Server Error");
+// 		}
+// 	} else {
+// 		res.redirect("/login");
+// 	}
+// });
 
 // Handle file upload and save metadata to MongoDB
 router.post("/upload", upload.single("file"), async (req, res) => {
@@ -115,47 +123,47 @@ router.post("/upload", upload.single("file"), async (req, res) => {
 });
 
 // 1. Get all assignments
-router.get("/assignments/all", async (req, res) => {
-	try {
-		const assignments = await Assignment.find();
-		res.json(assignments);
-	} catch (err) {
-		res.status(500).json({ message: err.message });
-	}
-});
+// router.get("/assignments/all", async (req, res) => {
+// 	try {
+// 		const assignments = await Assignment.find();
+// 		res.json(assignments);
+// 	} catch (err) {
+// 		res.status(500).json({ message: err.message });
+// 	}
+// });
 
-router.post("/assignments/all", async (req, res) => {
-	// console.log(req.user);
-	if (req.isAuthenticated()) {
-		try {
-			const assignments = await Assignment.find({
-				createdBy: req.user.username,
-			});
-			res.json(assignments);
-		} catch (err) {
-			res.status(500).json({ message: err.message });
-		}
-	} else {
-		res.redirect("/login");
-	}
-});
+// router.post("/assignments/all", async (req, res) => {
+// 	// console.log(req.user);
+// 	if (req.isAuthenticated()) {
+// 		try {
+// 			const assignments = await Assignment.find({
+// 				createdBy: req.user.username,
+// 			});
+// 			res.json(assignments);
+// 		} catch (err) {
+// 			res.status(500).json({ message: err.message });
+// 		}
+// 	} else {
+// 		res.redirect("/login");
+// 	}
+// });
 
 // 2. Get assignment by ID
-router.get("/assignments/:id", async (req, res) => {
-	if (req.isAuthenticated()) {
-		try {
-			const assignment = await Assignment.findById(req.params.id);
-			if (assignment == null) {
-				return res.status(404).json({ message: "Cannot find assignment" });
-			}
-			res.json(assignment);
-		} catch (err) {
-			res.status(500).json({ message: err.message });
-		}
-	} else {
-		res.redirect("/login");
-	}
-});
+// router.get("/assignments/:id", async (req, res) => {
+// 	if (req.isAuthenticated()) {
+// 		try {
+// 			const assignment = await Assignment.findById(req.params.id);
+// 			if (assignment == null) {
+// 				return res.status(404).json({ message: "Cannot find assignment" });
+// 			}
+// 			res.json(assignment);
+// 		} catch (err) {
+// 			res.status(500).json({ message: err.message });
+// 		}
+// 	} else {
+// 		res.redirect("/login");
+// 	}
+// });
 // router.get("/unit/assignments/:id", async (req, res) => {
 // 	try {
 // 		const { id } = req.params;
@@ -242,15 +250,15 @@ router.post("/units/assignments/delete/:id/:unitId", async (req, res) => {
 });
 
 // 4. Getting all assignments for a particular class
-router.get("/assignments/get/:class", async (req, res) => {
-	try {
-		const className = req.params.class;
-		const assignments = await Assignment.find({ AsClass: className });
-		res.status(200).json(assignments);
-	} catch (err) {
-		res.status(500).json({ message: err.message });
-	}
-});
+// router.get("/assignments/get/:class", async (req, res) => {
+// 	try {
+// 		const className = req.params.class;
+// 		const assignments = await Assignment.find({ AsClass: className });
+// 		res.status(200).json(assignments);
+// 	} catch (err) {
+// 		res.status(500).json({ message: err.message });
+// 	}
+// });
 
 // 5. Downloading assignments
 router.get("/assignments/download/:id", async (req, res) => {

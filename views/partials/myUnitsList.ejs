@@ -2,7 +2,7 @@
 <form action="/units" method="post">
 	<input type="hidden" name="unitId" value="<%= unit._id %>" />
 	<button class="btn text-start" type="submit">
-		<div>
+		<div class="nature-card">
 			<div class="uk-card uk-card-small uk-card-default">
 				<div class="uk-card-header">
 					<div class="uk-grid uk-grid-small uk-text-small" data-uk-grid>
@@ -57,17 +57,7 @@
 							title="Lecturer"
 							data-uk-tooltip
 						>
-							Lecturer's Name
-						</div>
-
-						<div class="uk-width-auto uk-text-right">
-							<a
-								data-uk-tooltip="title: Download Assignment"
-								href="/assignments/download/"
-								target="_blank"
-								class="uk-icon-link uk-text-primary"
-								data-uk-icon="icon:download; ratio: 1.5"
-							></a>
+							Lec: <%= user.username %>
 						</div>
 					</div>
 				</div>

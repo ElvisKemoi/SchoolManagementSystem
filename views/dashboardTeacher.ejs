@@ -186,112 +186,6 @@
 							>My Classes</a
 						>
 					</li>
-					<!-- <li>
-						<a href="#"
-							><span
-								data-uk-icon="icon: users"
-								class="uk-margin-small-right"
-							></span
-							>Upload Assignment</a
-						>
-					</li> -->
-					<!-- <li class="uk-parent">
-						<a href="#"
-							><span
-								data-uk-icon="icon: users"
-								class="uk-margin-small-right"
-							></span
-							>Students</a
-						>
-						<ul class="uk-nav-sub">
-							<li>
-								<a title="Article" href="article.html">Article</a>
-							</li>
-							<li>
-								<a title="Album" href="album.html">Album</a>
-							</li>
-							<li>
-								<a title="Cover" href="cover.html">Cover</a>
-							</li>
-							<li>
-								<a title="Cards" href="cards.html">Cards</a>
-							</li>
-							<li>
-								<a title="News Blog" href="newsBlog.html">News Blog</a>
-							</li>
-							<li>
-								<a title="Price" href="price.html">Price</a>
-							</li>
-							<li>
-								<a title="Login" href="login.html">Login</a>
-							</li>
-							<li>
-								<a title="Login-Dark" href="login-dark.html">Login - Dark</a>
-							</li>
-						</ul>
-					</li> -->
-					<!-- <li class="uk-parent">
-						<a href="#"
-							><span
-								data-uk-icon="icon: thumbnails"
-								class="uk-margin-small-right"
-							></span
-							>Edit</a
-						>
-						<ul class="uk-nav-sub">
-							<li>
-								<a title="Article" href="article.html">Article</a>
-							</li>
-							<li>
-								<a title="Album" href="album.html">Album</a>
-							</li>
-							<li>
-								<a title="Cover" href="cover.html">Cover</a>
-							</li>
-							<li>
-								<a title="Cards" href="cards.html">Cards</a>
-							</li>
-							<li>
-								<a title="News Blog" href="newsBlog.html">News Blog</a>
-							</li>
-							<li>
-								<a title="Price" href="price.html">Price</a>
-							</li>
-							<li>
-								<a title="Login" href="login.html">Login</a>
-							</li>
-							<li>
-								<a title="Login-Dark" href="login-dark.html">Login - Dark</a>
-							</li>
-						</ul>
-					</li>
-					<li>
-						<a href="/assignments"
-							><span
-								data-uk-icon="icon: album"
-								class="uk-margin-small-right"
-							></span
-							>Assignments</a
-						>
-					</li>
-					<li>
-						<a href="#"
-							><span
-								data-uk-icon="icon: lifesaver"
-								class="uk-margin-small-right"
-							></span
-							>Tips</a
-						>
-					</li>
-					<li>
-						<a href="#"
-							><span
-								data-uk-icon="icon: comments"
-								class="uk-margin-small-right"
-							></span
-							>Messages</a
-						>
-					</li> -->
 				</ul>
 				<div class="left-content-box uk-margin-top">
 					<h5>Daily Reports</h5>
@@ -539,7 +433,7 @@
 						<h1 class="uk-heading-primary uk-margin-remove uk-text-primary">
 							<%= assignments.length %>
 						</h1>
-						<div class="uk-text-small">
+						<!-- <div class="uk-text-small">
 							<a
 								class="uk-text-success"
 								data-uk-icon="icon: plus"
@@ -547,6 +441,53 @@
 							>
 								Add an Assignment
 							</a>
+						</div> -->
+						<div class="uk-position-relative uk-text-center uk-display-block">
+							<a
+								href="#"
+								class="uk-text-small uk-text-muted uk-display-block uk-text-center"
+								data-uk-icon="icon: triangle-down; ratio: 0.7"
+								>Add An Assignment
+							</a>
+							<!-- user dropdown -->
+							<div
+								class="uk-dropdown user-drop"
+								data-uk-dropdown="mode: click; pos: bottom-center; animation: uk-animation-slide-bottom-small; duration: 150"
+							>
+								<ul class="uk-nav uk-dropdown-nav uk-text-left">
+									<%myUnitsData.forEach((subject, index)=>{ %>
+									<li class="d-flex flex-row">
+										<form action="/units" method="post">
+											<input
+												type="hidden"
+												name="unitId"
+												value="<%= subject._id %>"
+											/>
+											<button class="btn" type="submit">
+												<%= index+1 %>
+
+												<span data-uk-icon="icon: info"></span>
+												<%= subject.unitName %>
+											</button>
+										</form>
+									</li>
+
+									<% })%> <% if (myUnitsData.length === 0){ %>
+
+									<li>
+										<a href="#modal-center1" data-uk-toggle
+											><span
+												data-uk-icon="icon: plus"
+												class="uk-text-warning"
+											></span>
+											You have <%= myUnitsData.length%> subjects.</a
+										>
+									</li>
+									<% } %>
+									<li class="uk-nav-divider"></li>
+								</ul>
+							</div>
+							<!-- /user dropdown -->
 						</div>
 					</div>
 
@@ -567,7 +508,7 @@
 								href="#"
 								class="uk-text-small uk-text-muted uk-display-block uk-text-center"
 								data-uk-icon="icon: triangle-down; ratio: 0.7"
-								>View Subjects
+								>View Classes
 							</a>
 							<!-- user dropdown -->
 							<div
@@ -577,12 +518,19 @@
 								<ul class="uk-nav uk-dropdown-nav uk-text-left">
 									<%myUnitsData.forEach((subject, index)=>{ %>
 									<li class="d-flex flex-row">
-										<a href="#">
-											<%= index+1 %>
+										<form action="/units" method="post">
+											<input
+												type="hidden"
+												name="unitId"
+												value="<%= subject._id %>"
+											/>
+											<button class="btn" type="submit">
+												<%= index+1 %>
 
-											<span data-uk-icon="icon: info"></span>
-											<%= subject.unitName %>
-										</a>
+												<span data-uk-icon="icon: info"></span>
+												<%= subject.unitName %>
+											</button>
+										</form>
 									</li>
 
 									<% })%> <% if (myUnitsData.length === 0){ %>
@@ -676,118 +624,8 @@
 					</div>
 				</div>
 				<hr />
-
-				<!-- Articles -->
-				<section class="uk-section uk-card uk-section-muted my-3">
-					<div class="uk-container" id="UpcomingEvents">
-						<h2 class="uk-text-bold">Upcoming Events</h2>
-						<div data-uk-slider="velocity: 5">
-							<div class="uk-position-relative">
-								<div class="uk-slider-container">
-									<ul
-										class="uk-slider-items uk-child-width-1-2@s uk-child-width-1-3@m uk-grid uk-grid-medium"
-										id="eventList"
-									>
-										<li>
-											<!-- card -->
-											<div>
-												<div
-													class="uk-card uk-card-default uk-card-small"
-													style="box-shadow: none"
-												>
-													<div class="uk-card-media-top">
-														<!-- <a href="#"
-														><img
-															data-src="https://unsplash.it/620/350/?random=1"
-															width="620"
-															height="350"
-															data-uk-img="target: !.uk-slideshow-items"
-															alt=""
-													/></a> -->
-													</div>
-													<div class="uk-card-header">
-														<div
-															class="uk-grid-small uk-flex-middle"
-															data-uk-grid
-														>
-															<div class="uk-width-auto">
-																<img
-																	class="uk-border-circle"
-																	alt=""
-																	width="40"
-																	height="40"
-																	src="https://unsplash.it/60/60/?random"
-																/>
-															</div>
-															<div class="uk-width-expand">
-																<h6
-																	class="uk-margin-remove-bottom uk-text-bold"
-																>
-																	Author Name
-																</h6>
-																<p
-																	class="uk-text-meta uk-margin-remove-top uk-text-small"
-																>
-																	<time datetime="2016-04-01T19:00"
-																		>April 01, 2016</time
-																	>
-																</p>
-															</div>
-														</div>
-													</div>
-													<div class="uk-card-body">
-														<h4 class="uk-margin-small-bottom uk-text-bold">
-															Sed do eiusmod tempor incididunt
-														</h4>
-														<span class="uk-text-small"
-															>Lorem ipsum dolor sit amet, consectetur
-															adipiscing elit, sed do eiusmod tempor
-															incididunt.</span
-														>
-														<p class="fw-bold uk-text-warning">Event Date</p>
-													</div>
-												</div>
-											</div>
-											<!-- /card -->
-										</li>
-									</ul>
-								</div>
-								<ul
-									class="uk-slider-nav uk-dotnav uk-flex-center uk-margin"
-								></ul>
-								<div class="uk-hidden@m uk-light">
-									<a
-										class="uk-position-center-left uk-position-small uk-text-warning"
-										href="#"
-										data-uk-slidenav-previous
-										data-uk-slider-item="previous"
-									></a>
-									<a
-										class="uk-position-center-right uk-position-small uk-text-warning"
-										href="#"
-										data-uk-slidenav-next
-										data-uk-slider-item="next"
-									></a>
-								</div>
-								<div class="uk-visible@m">
-									<a
-										class="uk-position-center-left-out uk-position-small uk-text-warning"
-										href="#"
-										data-uk-slidenav-previous
-										data-uk-slider-item="previous"
-									></a>
-									<a
-										class="uk-position-center-right-out uk-position-small uk-text-warning"
-										href="#"
-										data-uk-slidenav-next
-										data-uk-slider-item="next"
-									></a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</section>
-				<!-- /Articles -->
+				<!-- Events -->
+				<%- include("./partials/eventList.ejs") %>
 
 				<!--  -->
 				<div
@@ -810,35 +648,26 @@
 										<h4>My Classes</h4>
 									</div>
 									<div class="uk-width-expand uk-text-right panel-icons">
-										<a
-											href="#"
-											class="uk-icon-link sortable-icon"
-											title="Move"
-											data-uk-tooltip
-											data-uk-icon="icon: move"
-										></a>
-										<a
-											class="uk-icon-link uk-text-success"
-											title="Add Class"
-											data-uk-tooltip
-											data-uk-icon="icon: plus"
-											data-bs-toggle="modal"
-											data-bs-target="#addClassModal"
-										></a>
+										<button class="btn btn-outline-primary">
+											<a
+												href="#"
+												class="uk-icon-link sortable-icon uk-text-success"
+												title="Move"
+												data-uk-tooltip
+												data-uk-icon="icon: move"
+											></a>
+										</button>
 
-										<a
-											class="uk-icon-link"
-											title="Edit/Add"
-											data-uk-tooltip
-											data-uk-icon="icon: cog"
-										></a>
-										<a
-											href="/dashboard"
-											class="uk-icon-link uk-text-success"
-											title="Refresh"
-											data-uk-tooltip
-											data-uk-icon="icon: refresh"
-										></a>
+										<button class="btn btn-outline-primary">
+											<a
+												class="uk-icon-link uk-text-success"
+												title="Add Class"
+												data-uk-tooltip
+												data-uk-icon="icon: plus"
+												data-bs-toggle="modal"
+												data-bs-target="#addClassModal"
+											></a>
+										</button>
 									</div>
 								</div>
 							</div>
@@ -1126,299 +955,7 @@
 		</div>
 		<!-- /CONTENT -->
 		<!-- OFFCANVAS -->
-		<div id="offcanvas-nav" data-uk-offcanvas="flip: true; overlay: true">
-			<div
-				class="uk-offcanvas-bar uk-offcanvas-bar-animation uk-offcanvas-slide"
-			>
-				<button
-					class="uk-offcanvas-close uk-close uk-icon"
-					type="button"
-					data-uk-close
-				></button>
-
-				<div class="left-logo uk-flex uk-flex-middle">
-					<div><h2 class="uk-nav-header">School Logo</h2></div>
-					<!-- <img class="custom-logo" src="img/dashboard-logo.svg" alt="" /> -->
-				</div>
-				<div class="left-content-box content-box-dark">
-					<img
-						src="img/avatar.svg"
-						alt=""
-						class="uk-border-circle profile-img"
-					/>
-					<h4 class="uk-text-center uk-margin-remove-vertical text-light">
-						<%= userName %>
-					</h4>
-
-					<div class="uk-position-relative uk-text-center uk-display-block">
-						<a
-							href="#"
-							class="uk-text-small uk-text-muted uk-display-block uk-text-center"
-							data-uk-icon="icon: triangle-down; ratio: 0.7"
-							><%= userType %>
-						</a>
-						<!-- user dropdown -->
-						<div
-							class="uk-dropdown user-drop"
-							data-uk-dropdown="mode: click; pos: bottom-center; animation: uk-animation-slide-bottom-small; duration: 150"
-						>
-							<ul class="uk-nav uk-dropdown-nav uk-text-left">
-								<li>
-									<a href="#"
-										><span data-uk-icon="icon: info"></span> Summary</a
-									>
-								</li>
-								<li>
-									<a href="#"
-										><span data-uk-icon="icon: refresh"></span> Edit</a
-									>
-								</li>
-								<li>
-									<a class="uk-button" href="#modal-center" data-uk-toggle>
-										<span
-											data-uk-icon="icon: settings"
-											class="uk-margin-small-right"
-										></span
-										>Change Password
-									</a>
-								</li>
-								<li class="uk-nav-divider"></li>
-								<li>
-									<a href="#"
-										><span data-uk-icon="icon: trash"></span> Delete Your
-										Account</a
-									>
-								</li>
-								<li class="uk-nav-divider"></li>
-								<li>
-									<a href="/logout"
-										><span data-uk-icon="icon: sign-out"></span> Sign Out</a
-									>
-								</li>
-							</ul>
-						</div>
-						<!-- /user dropdown -->
-					</div>
-				</div>
-
-				<div class="left-nav-wrap">
-					<ul class="uk-nav uk-nav-default uk-nav-parent-icon" data-uk-nav>
-						<li class="uk-nav-header">ACTIONS</li>
-
-						<li>
-							<a href="#UpcomingEvents"
-								><span
-									data-uk-icon="icon: thumbnails"
-									class="uk-margin-small-right"
-								></span
-								>Upcoming Events</a
-							>
-						</li>
-						<li>
-							<a href="#myClasses"
-								><span
-									data-uk-icon="icon: users"
-									class="uk-margin-small-right"
-								></span
-								>My Classes</a
-							>
-						</li>
-						<!-- <li class="uk-parent">
-							<a href="#"
-								><span
-									data-uk-icon="icon: users"
-									class="uk-margin-small-right"
-								></span
-								>Students</a
-							>
-							<ul class="uk-nav-sub">
-								<li>
-									<a title="Article" href="article.html">Article</a>
-								</li>
-								<li>
-									<a title="Album" href="album.html">Album</a>
-								</li>
-								<li>
-									<a title="Cover" href="cover.html">Cover</a>
-								</li>
-								<li>
-									<a title="Cards" href="cards.html">Cards</a>
-								</li>
-								<li>
-									<a title="News Blog" href="newsBlog.html">News Blog</a>
-								</li>
-								<li>
-									<a title="Price" href="price.html">Price</a>
-								</li>
-								<li>
-									<a title="Login" href="login.html">Login</a>
-								</li>
-								<li>
-									<a title="Login-Dark" href="login-dark.html">Login - Dark</a>
-								</li>
-							</ul>
-						</li> -->
-						<!-- <li class="uk-parent">
-							<a href="#"
-								><span
-									data-uk-icon="icon: thumbnails"
-									class="uk-margin-small-right"
-								></span
-								>Edit</a
-							>
-							<ul class="uk-nav-sub">
-								<li>
-									<a title="Article" href="article.html">Article</a>
-								</li>
-								<li>
-									<a title="Album" href="album.html">Album</a>
-								</li>
-								<li>
-									<a title="Cover" href="cover.html">Cover</a>
-								</li>
-								<li>
-									<a title="Cards" href="cards.html">Cards</a>
-								</li>
-								<li>
-									<a title="News Blog" href="newsBlog.html">News Blog</a>
-								</li>
-								<li>
-									<a title="Price" href="price.html">Price</a>
-								</li>
-								<li>
-									<a title="Login" href="login.html">Login</a>
-								</li>
-								<li>
-									<a title="Login-Dark" href="login-dark.html">Login - Dark</a>
-								</li>
-							</ul>
-						</li> -->
-						<!-- <li>
-							<a href="/assignments"
-								><span
-									data-uk-icon="icon: album"
-									class="uk-margin-small-right"
-								></span
-								>Assignments</a
-							>
-						</li> -->
-					</ul>
-					<div class="left-content-box uk-margin-top">
-						<h5>Daily Reports</h5>
-						<div>
-							<span class="uk-text-small">Traffic <small>(+50)</small></span>
-							<progress class="uk-progress" value="50" max="100"></progress>
-						</div>
-						<div>
-							<span class="uk-text-small">Income <small>(+78)</small></span>
-							<progress
-								class="uk-progress success"
-								value="78"
-								max="100"
-							></progress>
-						</div>
-						<div>
-							<span class="uk-text-small">Feedback <small>(-12)</small></span>
-							<progress
-								class="uk-progress warning"
-								value="12"
-								max="100"
-							></progress>
-						</div>
-					</div>
-				</div>
-				<div class="bar-bottom">
-					<ul
-						class="uk-subnav uk-flex uk-flex-center uk-child-width-1-5"
-						data-uk-grid
-					>
-						<li>
-							<a
-								href="#"
-								class="uk-icon-link"
-								data-uk-icon="icon: home"
-								title="Home"
-								data-uk-tooltip
-							></a>
-						</li>
-						<li>
-							<a
-								href="#"
-								class="uk-icon-link"
-								data-uk-icon="icon: settings"
-								title="Settings"
-								data-uk-tooltip
-							></a>
-						</li>
-						<li>
-							<a
-								href="#"
-								class="uk-icon-link"
-								data-uk-icon="icon: social"
-								title="Social"
-								data-uk-tooltip
-							></a>
-						</li>
-
-						<li>
-							<a
-								href="/logout"
-								class="uk-icon-link"
-								data-uk-tooltip="Sign out"
-								data-uk-icon="icon: sign-out"
-							></a>
-						</li>
-					</ul>
-				</div>
-				<!-- 				
-				<ul class="uk-nav uk-nav-default">
-					<li class="uk-active"><a href="#">Active</a></li>
-					<li class="uk-parent">
-						<a href="#">Parent</a>
-						<ul class="uk-nav-sub">
-							<li><a href="#">Sub item</a></li>
-							<li><a href="#">Sub item</a></li>
-						</ul>
-					</li>
-					<li class="uk-nav-header">Header</li>
-					<li>
-						<a href="#js-options"
-							><span
-								class="uk-margin-small-right uk-icon"
-								data-uk-icon="icon: table"
-							></span>
-							Item</a
-						>
-					</li>
-					<li>
-						<a href="#"
-							><span
-								class="uk-margin-small-right uk-icon"
-								data-uk-icon="icon: thumbnails"
-							></span>
-							Item</a
-						>
-					</li>
-					<li class="uk-nav-divider"></li>
-					<li>
-						<a href="#"
-							><span
-								class="uk-margin-small-right uk-icon"
-								data-uk-icon="icon: trash"
-							></span>
-							Item</a
-						>
-					</li>
-				</ul>
-				<h3>Title</h3>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-					eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-					minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-					aliquip ex ea commodo consequat.
-				</p> -->
-			</div>
-		</div>
+		<%- include("./partials/teachersOffcanvas.ejs") %>
 		<!-- /OFFCANVAS -->
 
 		<!-- JS FILES -->

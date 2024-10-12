@@ -26,11 +26,17 @@
 			href="https://cdn.jsdelivr.net/npm/uikit@latest/dist/css/uikit.min.css"
 		/> -->
 		<link rel="stylesheet" type="text/css" href="css/uikit.min.css" />
-		<link rel="stylesheet" type="text/css" href="css/login-dark.css" />
+		<!-- <link rel="stylesheet" type="text/css" href="css/login-dark.css" /> -->
 	</head>
 	<body
 		class="login uk-cover-container uk-background-secondary uk-flex uk-flex-center uk-flex-middle uk-height-viewport uk-overflow-hidden uk-light"
 		data-uk-height-viewport
+		style="
+			background-image: url('/img/slide1.jpg');
+			background-position: center center;
+			background-repeat: no-repeat;
+			background-size: cover;
+		"
 	>
 		<!-- overlay -->
 		<div class="uk-position-cover uk-overlay-primary"></div>
@@ -155,7 +161,7 @@
 						</button>
 					</div>
 				</fieldset>
-				<div>
+				<div class="uk-text-center">
 					<p>
 						Don't have an account
 						<a href="/register" class="text-primary">Register</a>
