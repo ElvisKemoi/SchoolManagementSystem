@@ -21,19 +21,23 @@ passportConfig(router);
 // Assignments
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
+		const lecturerId = req.user._id;
 		const assignmentDir = "Assignments";
-		const assignmentGivenDir = `${assignmentDir}/Given`;
+		const assignmentGivenDir = `${assignmentDir}/${lecturerId}`;
+
 		if (!fs.existsSync(assignmentDir)) {
 			fs.mkdirSync(assignmentDir);
 		}
 		if (!fs.existsSync(assignmentGivenDir)) {
 			fs.mkdirSync(assignmentGivenDir);
 		}
-		cb(null, "Assignments/Given");
+		cb(null, assignmentGivenDir);
 	},
 	filename: (req, file, cb) => {
 		// Use the original name of the file
-		cb(null, file.originalname);
+
+		const uniqueName = `${Date.now()}_${file.originalname}`;
+		cb(null, uniqueName);
 	},
 });
 
@@ -88,11 +92,12 @@ router.post("/upload", upload.single("file"), async (req, res) => {
 			const name = goodTitle[0];
 			const description = data.description;
 			const subject = data.subject;
-			const asClass = data.AsClass;
+			// const asClass = data.AsClass;
 			const deadlineDate = data.deadlineDate;
 			const deadlineTime = data.deadlineTime;
 			const deadline = combineDateTime(deadlineDate, deadlineTime);
 
+			// AsClass: asClass,
 			const newAssignment = new Assignment({
 				title: name,
 				description: description,
@@ -100,7 +105,6 @@ router.post("/upload", upload.single("file"), async (req, res) => {
 				createdBy: creator,
 				subject: subject,
 				unit: req.body.unitId,
-				AsClass: asClass,
 				deadline: deadline,
 			});
 

@@ -6,6 +6,26 @@ const student = require("../controllers/studentController");
 
 router.use(flash());
 
+router.post("/students/add", async (req, res) => {
+	if (req.isAuthenticated()) {
+		Student.register(
+			{ username: req.body.username },
+			req.body.password,
+			(err, user) => {
+				if (err) {
+					req.flash("info", err);
+					// res.status(500).json({ error: err });
+					// console.log(err);
+					// res.redirect("/register");
+				} else {
+					req.flash("info", "Student Added Successfully!");
+					res.redirect("/dashboard");
+				}
+			}
+		);
+	}
+});
+
 router
 	.post("/students/:id/class", async (req, res) => {
 		if (req.isAuthenticated()) {
@@ -69,6 +89,16 @@ router
 				error: `Error removing unit: ${error.message}`,
 			});
 		}
+	})
+	.post("/students/delete/:id", async (req, res) => {
+		const { id } = req.params;
+		const deletedStudent = await student.deleteStudent(id);
+		if (!deletedStudent.error) {
+			req.flash("info", "Student Deleted Successfully!");
+		} else {
+			req.flash("info", deletedStudent.error);
+		}
+		res.redirect("/dashboard");
 	});
 
 module.exports = router;

@@ -57,6 +57,22 @@ const unit = {
 			return { error: error.message };
 		}
 	},
+	removeMember: async (unitId, studentId) => {
+		try {
+			const updatedUnit = await Unit.findByIdAndUpdate(
+				{ _id: unitId },
+				{ $pull: { members: studentId } },
+				{ new: true }
+			);
+			if (updatedUnit) {
+				return true;
+			} else {
+				throw new Error("Member Not Removed");
+			}
+		} catch (error) {
+			return { error: error.message };
+		}
+	},
 	getUnitData: async (unitsArray) => {
 		try {
 			let theUnits = [];

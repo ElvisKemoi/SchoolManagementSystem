@@ -55,13 +55,15 @@ router.get("/dashboard", async (req, res) => {
 		};
 
 		const fetchAdminData = async () => {
-			const [numbers, classes, allTeachers, user] = await Promise.all([
-				Numbers(),
-				Class.find().sort({ className: 1 }),
-				Teacher.find(),
-				Admin.findById(userId),
-			]);
-			return { numbers, classes, allTeachers, user };
+			const [numbers, classes, allTeachers, user, allStudents] =
+				await Promise.all([
+					Numbers(),
+					Class.find().sort({ className: 1 }),
+					Teacher.find(),
+					Admin.findById(userId),
+					Student.find(),
+				]);
+			return { numbers, classes, allTeachers, user, allStudents };
 		};
 		await countMembers();
 

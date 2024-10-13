@@ -14,7 +14,7 @@ const assignmentSchema = new mongoose.Schema(
 		unit: { type: mongoose.Schema.ObjectId, required: false, ref: Unit },
 
 		subject: { type: String, required: true },
-		AsClass: { type: String, required: true },
+		AsClass: { type: String, required: false },
 		deadline: { type: Date, required: false },
 	},
 	{

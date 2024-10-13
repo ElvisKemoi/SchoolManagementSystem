@@ -35,7 +35,7 @@ async function uploadFile() {
 	const formData = new FormData();
 	const subject = document.getElementById("subject");
 	const description = document.getElementById("instructions");
-	const asClass = document.getElementById("AsClass");
+	// const asClass = document.getElementById("AsClass");
 	const deadlineDate = document.getElementById("deadlineDate");
 	const deadlineTime = document.getElementById("deadlineTime");
 	const unitId = document.getElementById("unitIdInput");
@@ -43,7 +43,7 @@ async function uploadFile() {
 	const more = {
 		subject: subject.value,
 		description: description.value,
-		AsClass: "6707c56352bce35df0f79f87",
+
 		deadlineDate: deadlineDate.value,
 		deadlineTime: deadlineTime.value,
 	};

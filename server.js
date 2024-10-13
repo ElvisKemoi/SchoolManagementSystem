@@ -54,9 +54,15 @@ app.use((err, req, res, next) => {
 
 async function firstUsers(username, password) {
 	await Promise.all([
-		admin.createFirst(username, password),
-		teacher.createFirst(username, password),
-		student.createFirst(username, password),
+		admin.createFirst(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD),
+		teacher.createFirst(
+			process.env.TEACHER_USERNAME,
+			process.env.TEACHER_PASSWORD
+		),
+		student.createFirst(
+			process.env.STUDENT_USERNAME,
+			process.env.STUDENT_PASSWORD
+		),
 	]);
 	return true;
 }

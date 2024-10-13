@@ -96,6 +96,20 @@ const student = {
 			return { error: message };
 		}
 	},
+	deleteStudent: async (studentId) => {
+		try {
+			const foundStudent = await Student.findByIdAndDelete(studentId);
+
+			for (let index = 0; index < foundStudent.myUnits.length; index++) {
+				const element = foundStudent.myUnits[index];
+				const removedMember = await unit.removeMember(element, studentId);
+			}
+
+			return true;
+		} catch (error) {
+			return { error: error.message };
+		}
+	},
 };
 
 module.exports = student;
