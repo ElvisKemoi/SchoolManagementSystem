@@ -174,13 +174,23 @@
 							>My Units</a
 						>
 					</li>
+
+					<li>
+						<a href="#myTimetable"
+							><span
+								data-uk-icon="icon: album"
+								class="uk-margin-small-right"
+							></span
+							>My Timetable</a
+						>
+					</li>
 					<!-- <li class="uk-parent">
 						<a href="#"
 							><span
 								data-uk-icon="icon: users"
 								class="uk-margin-small-right"
 							></span
-							>Students</a
+							>Academics</a
 						>
 						<ul class="uk-nav-sub">
 							<li>
@@ -208,16 +218,6 @@
 								<a title="Login-Dark" href="login-dark.html">Login - Dark</a>
 							</li>
 						</ul>
-					</li> -->
-
-					<!-- <li>
-						<a href="#"
-							><span
-								data-uk-icon="icon: album"
-								class="uk-margin-small-right"
-							></span
-							>Assignments</a
-						>
 					</li> -->
 
 					<!-- <li class="uk-parent">
@@ -865,6 +865,9 @@
 					month = date.toLocaleString("default", { month: "long" }); %> <% const
 					year = date.getUTCFullYear(); %> <% return `${day}, ${month},
 					${year}`; %> <% } %>
+					<!-- /panel -->
+					<!-- panel -->
+					<%- include("./partials/timetableList.ejs") %>
 					<!-- /panel -->
 					<!-- panel -->
 					<!-- <div class="uk-width-1-2@l">

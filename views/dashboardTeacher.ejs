@@ -196,6 +196,15 @@
 							>My Classes</a
 						>
 					</li>
+					<li>
+						<a href="#myTimetable"
+							><span
+								data-uk-icon="icon: album"
+								class="uk-margin-small-right"
+							></span
+							>My Timetable</a
+						>
+					</li>
 				</ul>
 				<div class="left-content-box uk-margin-top">
 					<h5>Daily Reports</h5>
@@ -581,19 +590,18 @@
 					<div>
 						<span class="uk-text-small"
 							><span
-								data-uk-icon="icon:clock"
+								data-uk-icon="icon:folder"
 								class="uk-margin-small-right uk-text-primary"
 							></span
-							>Traffic hours</span
+							>Timetables</span
 						>
 						<h1 class="uk-heading-primary uk-margin-remove uk-text-primary">
-							12.00<small class="uk-text-small">PM</small>
+							<%= timetables.length%>
 						</h1>
 						<div class="uk-text-small">
-							<span class="uk-text-success" data-uk-icon="icon: triangle-up">
-								19%</span
-							>
-							more than last week.
+							<span class="uk-text-warning" data-uk-icon="icon: triangle-down">
+							</span>
+							<a href="#myTimetable">View timetables</a>
 						</div>
 					</div>
 					<div>
@@ -691,6 +699,9 @@
 							</div>
 						</div>
 					</div>
+					<!-- /panel -->
+					<!-- panel -->
+					<%- include("./partials/timetableList.ejs") %>
 					<!-- /panel -->
 					<!-- panel -->
 					<!-- <div class="uk-width-1-2@l">

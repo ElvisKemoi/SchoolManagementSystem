@@ -180,7 +180,7 @@
 
 				
 					<li>
-						<a href="/teachersList"
+						<a href="#Lecturers"
 							><span
 								data-uk-icon="icon: users"
 								class="uk-margin-small-right"
@@ -206,6 +206,15 @@
 								class="uk-margin-small-right"
 							></span
 							>Classes</a
+						>
+					</li>
+					<li>
+						<a href="#myTimetable"
+							><span
+								data-uk-icon="icon: folder"
+								class="uk-margin-small-right"
+							></span
+							>Timetables</a
 						>
 					</li>
 					
@@ -300,10 +309,10 @@
 							<%= numbers.studentNumbers %>
 						</h1>
 						<div class="uk-text-small">
-							<span class="uk-text-success" data-uk-icon="icon: triangle-up"
-								>15%</span
+							<span class="uk-text-success" data-uk-icon="icon: triangle-down"
+								></span
 							>
-							more than last week.
+							<a href="#Lecturers">View Lecturers</a>
 						</div>
 					</div>
 					<div>
@@ -319,9 +328,9 @@
 						</h1>
 						<div class="uk-text-small">
 							<span class="uk-text-warning" data-uk-icon="icon: triangle-down"
-								>-15%</span
+								></span
 							>
-							less than last week.
+							<a href="#Lecturers">View Lecturers</a>
 						</div>
 					</div>
 					<div>
@@ -337,28 +346,28 @@
 							<%= numbers.classNumbers %>
 						</h1>
 						<div class="uk-text-small">
-							<span class="uk-text-success" data-uk-icon="icon: triangle-up">
-								19%</span
+							<span class="uk-text-success" data-uk-icon="icon: triangle-down">
+								</span
 							>
-							more than last week.
+							<a href="#classes">View Classes</a>
 						</div>
 					</div>
 					<div>
 						<span class="uk-text-small"
 							><span
-								data-uk-icon="icon:search"
+								data-uk-icon="icon:folder"
 								class="uk-margin-small-right uk-text-primary"
 							></span
-							>Week Search</span
+							>Timetables</span
 						>
 						<h1 class="uk-heading-primary uk-margin-remove uk-text-primary">
-							9.543
+							<%= timetables.length%>
 						</h1>
 						<div class="uk-text-small">
-							<span class="uk-text-danger" data-uk-icon="icon: triangle-down">
-								-23%</span
+							<span class="uk-text-warning" data-uk-icon="icon: triangle-down">
+								</span
 							>
-							less than last week.
+							<a href="#myTimetable">View timetables</a>
 						</div>
 					</div>
 					<div class="uk-visible@xl">
@@ -667,7 +676,7 @@
 				>
 
 				<!-- panel -->
-				<div class="uk-width-1-1@l my-4" id="classes" >
+				<div class="uk-width-1-1@l my-4" id="Lecturers" >
 					<div class="uk-card">
 						<div class="uk-card-header">
 							<div class="uk-grid uk-grid-small">
@@ -710,6 +719,7 @@
 							
 							<div
 								class="uk-child-width-1-3@m uk-grid-small uk-grid-match"
+								style="max-height: 50vh; overflow-y: scroll;" 
 								uk-grid
 								id="homeClassCards"
 								
@@ -788,7 +798,7 @@
 				</div>
 				<!-- /panel -->
 				<!-- panel -->
-				<div class="uk-width-1-1@l my-4" id="classes" style="max-height: 100vh; overflow-y: scroll;" id="StudentList">
+				<div class="uk-width-1-1@l my-4" id="StudentList">
 					<div class="uk-card">
 						<div class="uk-card-header">
 							<div class="uk-grid uk-grid-small">
@@ -831,6 +841,7 @@
 							
 							<div
 								class="uk-child-width-1-3@m uk-grid-small uk-grid-match"
+								style="max-height: 50vh; overflow-y: scroll;" 
 								uk-grid
 								id="homeClassCards"
 								
@@ -955,6 +966,7 @@
 							
 							<div
 								class="uk-child-width-1-3@m uk-grid-small uk-grid-match"
+								style="max-height: 50vh; overflow-y: scroll;" 
 								uk-grid
 								id="homeClassCards"
 								
@@ -1003,46 +1015,9 @@
 					</div>
 				</div>
 				<!-- /panel -->
-					<!-- panel -->
-					<!-- <div class="uk-width-1-2@l">
-						<div class="uk-card uk-card-default uk-card-small uk-card-hover">
-							<div class="uk-card-header">
-								<div class="uk-grid uk-grid-small">
-									<div class="uk-width-auto"><h4>Sales Chart</h4></div>
-									<div class="uk-width-expand uk-text-right panel-icons">
-										<a
-											href="#"
-											class="uk-icon-link sortable-icon"
-											title="Move"
-											data-uk-tooltip
-											data-uk-icon="icon: move"
-										></a>
-										<a
-											href="#"
-											class="uk-icon-link"
-											title="Configuration"
-											data-uk-tooltip
-											data-uk-icon="icon: cog"
-										></a>
-										<a
-											href="#"
-											class="uk-icon-link"
-											title="Close"
-											data-uk-tooltip
-											data-uk-icon="icon: close"
-										></a>
-									</div>
-								</div>
-							</div>
-							<div class="uk-card-body">
-								<div class="chart-container">
-									<canvas id="chart2"></canvas>
-								</div>
-							</div>
-						</div>
-					</div> -->
-					<!-- /panel -->
-					 
+			<!-- panel -->
+			<%- include("./partials/timetableList.ejs")  %>
+			<!-- /panel -->
 
 					<!-- Table Added  -->
 

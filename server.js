@@ -4,21 +4,22 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const app = express();
+
 const admin = require("./controllers/adminController");
 const teacher = require("./controllers/teachersController");
 const student = require("./controllers/studentController");
 const storage = require("./controllers/storageControllers");
+
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 require("dotenv").config();
 const port = process.env.PORT || 3000;
-
 // CREATING SESSION
 app.use(
 	session({
-		secret: "Our little secret.",
+		secret: process.env.SESSION_SECRET,
 		resave: false,
 		saveUninitialized: false,
 		cookie: {
@@ -28,7 +29,7 @@ app.use(
 );
 
 // DATABASE CONNECTION
-mongoose.connect("mongodb://localhost:27017/WesterTechnicalCollege");
+mongoose.connect(process.env.MONGODB_URI);
 
 // IMPORTING ROUTES
 const eventsRoutes = require("./routes/events");
@@ -38,6 +39,7 @@ const classRoutes = require("./routes/classRoutes");
 const studentRoutes = require("./routes/studentRoutes");
 const commonRoutes = require("./routes/commonRoutes");
 const unitRoutes = require("./routes/unitRoute");
+const timetableRouters = require("./routes/timetableRoutes");
 app.use("/", teachersRoutes);
 app.use("/", eventsRoutes);
 app.use("/", assignmentRoutes);
@@ -45,6 +47,7 @@ app.use("/", classRoutes);
 app.use("/", studentRoutes);
 app.use("/", commonRoutes);
 app.use("/unit", unitRoutes);
+app.use("/timetable", timetableRouters);
 
 // Ensure error handling middleware is set up
 app.use((err, req, res, next) => {
