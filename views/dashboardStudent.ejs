@@ -203,6 +203,37 @@
 							</li> -->
 						</ul>
 					</li>
+					<li class="uk-parent">
+						<a href="#"
+							><span
+								data-uk-icon="icon: users"
+								class="uk-margin-small-right"
+							></span
+							>Admission</a
+						>
+						<ul class="uk-nav-sub">
+							<li>
+								<a
+									title="Fees Structure"
+									data-bs-toggle="modal"
+									data-bs-target="#defermentModal"
+									>Deferment</a
+								>
+							</li>
+							<li>
+								<a
+									title="Fees Structure"
+									data-bs-toggle="modal"
+									data-bs-target="#defermentRequestModal"
+									>Deferment Requests</a
+								>
+							</li>
+
+							<!-- <li>
+								<a title="Album" href="album.html">Fee Balance</a>
+							</li> -->
+						</ul>
+					</li>
 
 					<!-- <li class="uk-parent">
 						<a href="#"
@@ -312,7 +343,7 @@
 
 		<!-- MODALS -->
 
-		<!-- Modal -->
+		<!-- Add Unit Modal -->
 		<div
 			class="modal fade"
 			id="addUnitsModal"
@@ -559,6 +590,131 @@
 			addUnitsModal.addEventListener("show.bs.modal", function (event) {
 				// Button that triggered the modal
 
+				let button = event.relatedTarget;
+				// Extract info from data-bs-* attributes
+				let recipient = button.getAttribute("data-bs-whatever");
+
+				// Use above variables to manipulate the DOM
+			});
+		</script>
+
+		<!-- Deferments Modal -->
+		<div
+			class="modal fade"
+			id="defermentModal"
+			tabindex="-1"
+			role="dialog"
+			aria-labelledby="modalTitleId"
+			aria-hidden="true"
+		>
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<form action="/deferment/save" method="post">
+						<div class="modal-header">
+							<h5 class="modal-title" id="modalTitleId">Apply Deferment</h5>
+							<button
+								type="button"
+								class="btn-close"
+								data-bs-dismiss="modal"
+								aria-label="Close"
+							></button>
+						</div>
+						<div class="modal-body">
+							<div class="container-fluid">
+								<div class="mb-3">
+									<p>
+										Name: <span class="uk-text-bold"><%= user.username %></span>
+									</p>
+								</div>
+								<div class="form-floating mb-3">
+									<input
+										type="text"
+										class="form-control"
+										name="reason"
+										id="reason"
+										placeholder=""
+									/>
+									<label for="reason">Comment</label>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button
+								type="button"
+								class="btn btn-secondary"
+								data-bs-dismiss="modal"
+							>
+								Close
+							</button>
+							<button type="submit" class="btn btn-primary">
+								Send Request
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			var defermentModal = document.getElementById("defermentModal");
+
+			defermentModal.addEventListener("show.bs.modal", function (event) {
+				// Button that triggered the modal
+				let button = event.relatedTarget;
+				// Extract info from data-bs-* attributes
+				let recipient = button.getAttribute("data-bs-whatever");
+
+				// Use above variables to manipulate the DOM
+			});
+		</script>
+
+		<!-- Deferment Requests Modal -->
+		<div
+			class="modal fade"
+			id="defermentRequestModal"
+			tabindex="-1"
+			role="dialog"
+			aria-labelledby="modalTitleId"
+			aria-hidden="true"
+		>
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="modalTitleId">Deferment Requests</h5>
+						<button
+							type="button"
+							class="btn-close"
+							data-bs-dismiss="modal"
+							aria-label="Close"
+						></button>
+					</div>
+					<div class="modal-body">
+						// TODO ADD THE LIST OF DEFERMENT REQUESTS
+						<div class="container-fluid">
+							LIST OF DEFERMENT REQUESTS GOES HERE
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button
+							type="button"
+							class="btn btn-secondary"
+							data-bs-dismiss="modal"
+						>
+							Close
+						</button>
+						<button type="button" class="btn btn-primary">Save</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			var defermentRequestModal = document.getElementById(
+				"defermentRequestModal"
+			);
+
+			defermentRequestModal.addEventListener("show.bs.modal", function (event) {
+				// Button that triggered the modal
 				let button = event.relatedTarget;
 				// Extract info from data-bs-* attributes
 				let recipient = button.getAttribute("data-bs-whatever");

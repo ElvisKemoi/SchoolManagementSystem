@@ -21,6 +21,7 @@ const {
 } = require("../controllers/functions");
 
 const passportConfig = require("../passportConfig");
+const deferment = require("../controllers/defermentController");
 
 passportConfig(router);
 
@@ -61,15 +62,16 @@ router.get("/dashboard", async (req, res) => {
 		};
 
 		const fetchAdminData = async () => {
-			const [numbers, classes, allTeachers, user, allStudents] =
+			const [numbers, classes, allTeachers, user, allStudents, deferments] =
 				await Promise.all([
 					Numbers(),
 					Class.find().sort({ className: 1 }),
 					Teacher.find(),
 					Admin.findById(userId),
 					Student.find(),
+					deferment.list(),
 				]);
-			return { numbers, classes, allTeachers, user, allStudents };
+			return { numbers, classes, allTeachers, user, allStudents, deferments };
 		};
 		await countMembers();
 

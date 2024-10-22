@@ -385,22 +385,27 @@
 							<a href="#myTimetable">View timetables</a>
 						</div>
 					</div>
-					<div class="uk-visible@xl">
+					<div >
+						<% let pendingRequests; %>
+						<%pendingRequests = deferments.filter(thisthing => !thisthing.approved).length%>
+
+
 						<span class="uk-text-small"
 							><span
 								data-uk-icon="icon:users"
 								class="uk-margin-small-right uk-text-primary"
 							></span
-							>Lorem ipsum</span
+							>Deferment Requests</span
 						>
 						<h1 class="uk-heading-primary uk-margin-remove uk-text-primary">
-							5.284
+							<%= pendingRequests%>
 						</h1>
 						<div class="uk-text-small">
-							<span class="uk-text-success" data-uk-icon="icon: triangle-up">
-								7%</span
+							<span class="uk-text-success" data-uk-icon="icon: triangle-down">
+							</span
 							>
-							more than last week.
+							<a data-bs-toggle="modal"
+							data-bs-target="#defermentListModal">View Deferment Requests</a>
 						</div>
 					</div>
 				</div>
@@ -626,6 +631,191 @@
 						</div>
 					</div>
 				</div>
+				<!-- Deferments List Modal -->
+				
+				
+				<!-- Modal -->
+				<div
+					class="modal fade"
+					id="defermentListModal"
+					tabindex="-1"
+					role="dialog"
+					aria-labelledby="modalTitleId"
+					aria-hidden="true"
+				>
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="modalTitleId">
+									<span
+										class="badge bg-primary"
+										><%= pendingRequests %></span
+									>
+									
+									Deferment Requests
+								</h5>
+								<button
+									type="button"
+									class="btn-close"
+									data-bs-dismiss="modal"
+									aria-label="Close"
+								></button>
+							</div>
+							<div class="modal-body">
+								<div class="container-fluid">
+									<!-- Hover added -->
+									<div class="list-group d-flex flex-row">
+										<button
+										type="button"
+										class="list-group-item list-group-item-action "
+										onclick="changeDefermentView('all')"
+									>
+										All
+									</button>
+										<button type="button" class="list-group-item list-group-item-action "
+											onclick="changeDefermentView('photo-card')"
+											>
+											<span
+										class="badge bg-primary"><%= pendingRequests %></span>
+									
+											Pending
+										</button>
+										<button type="button" class="list-group-item list-group-item-action "
+											onclick="changeDefermentView('music-card')"
+											>
+											Approved
+										</button>
+									
+									
+									</div>
+									<div id="theDefermentListing">
+										<% deferments.forEach(((teacher)=> {%> 
+										<% let theStat = teacher.approved ? "music-card" : "photo-card"; %>
+										<div class="<%= theStat %> my-2 shadow">
+											<div class="uk-card uk-card-small uk-card-default">
+												<div class="uk-card-header">
+													<div class="uk-grid uk-grid-small uk-text-small" data-uk-grid>
+														<div class="uk-width-expand">
+															<% let theComment = teacher.approved ? "Approved": "Pending"   %>
+															<span class="cat-txt">  <%= theComment %> </span>
+														</div>
+														<div class="uk-width-auto uk-text-right uk-text-muted"  
+														
+														title="At"
+																	data-uk-tooltip>
+															<%let localTimeString = new Date(teacher.createdAt).toLocaleDateString();%>
+		
+															<span data-uk-icon="icon:clock; ratio: 0.8"></span>  <%=localTimeString%>
+														</div>
+													</div>
+												</div>
+												<div class="uk-card-body">
+													<h6 class="uk-margin-small-bottom uk-margin-remove-adjacent uk-text-bold"><%= teacher.studentName  %></h6>
+													<p class="uk-text-small uk-text-muted">
+														<%= teacher.reason %>
+													</p>
+													<% if (teacher.approved) { %>
+														<p class="uk-text-small uk-text-muted">
+															Updated On: <%= formatDate(teacher.updatedAt) %>
+														</p>
+													<% } %>
+												</div>
+												<div class="uk-card-footer">
+													<div class="uk-grid uk-grid-small uk-grid-divider uk-flex uk-flex-middle" data-uk-grid>
+														<!-- <div class="uk-width-expand uk-text-small text-nowrap overflow-hidden" 
+														data-uk-tooltip
+														title="Class Members"
+														>
+															clas.members  Members  
+														</div> -->
+													
+														<div class="uk-width-auto uk-text-right ms-auto">
+															<div class="uk-width-auto">
+																<div class="uk-inline">
+																	<a data-uk-icon="icon:more-vertical"></a>
+																	<div data-uk-dropdown="mode: click; pos:top-right">
+																		<ul class="uk-nav uk-dropdown-nav">
+																			<li class="uk-nav-header text-center">Actions</li>
+																			<% if (!teacher.approved) { %>
+																				<li><a href="/deferment/approve/<%= teacher._id %>"><span data-uk-icon="icon: check; ratio: 0.9"></span> Approve Deferment</a></li>
+																			<% }else{ %>
+																			<li>
+																				<a href="#" class="uk-text-danger">
+																					<span data-uk-icon="icon: trash; ratio: 0.9"></span>
+																					<form id="deleteReq-<%=teacher._id%>" action="/deferment/delete/<%=teacher._id%>" method="post">
+																						<button
+																						type="button"
+																						class="uk-icon-link btn btn-outline-danger "
+																						title="Delete Request"
+																						data-uk-tooltip
+																						onclick="confirmClassDelete('deleteReq-<%=teacher._id%>')"
+																						>
+																						Delete Request
+																						</button>
+																					</form>
+																				</a>
+																			</li>
+																			<% } %>
+																		</ul>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<%})) %> 
+									</div>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button
+									type="button"
+									class="btn btn-secondary"
+									data-bs-dismiss="modal"
+								>
+									Close
+								</button>
+							
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<script>
+					var defermentListModal = document.getElementById('defermentListModal');
+					const theDefermentListing = document.getElementById("theDefermentListing");
+					
+					function changeDefermentView(theView){
+						const theChildren = theDefermentListing.children;
+					
+						if(theView === "all"){
+							for (let index = 0; index < theChildren.length; index++) {
+								const element = theChildren[index];
+								element.classList.remove("d-none")
+							}
+						}else{
+							for (let index = 0; index < theChildren.length; index++) {
+								const element = theChildren[index];
+								element.classList.toggle("d-none", (!(element.classList.contains(theView))))
+								
+							}
+						}
+						
+
+					}
+				
+					defermentListModal.addEventListener('show.bs.modal', function (event) {
+						// Button that triggered the modal
+						let button = event.relatedTarget;
+						// Extract info from data-bs-* attributes
+						let recipient = button.getAttribute('data-bs-whatever');
+				
+						// Use above variables to manipulate the DOM
+					});
+				</script>
+				
 				
 			
 
@@ -741,61 +931,61 @@
 							>
 							<% allTeachers.forEach(((teacher)=> {%> 
 								<div class="nature-card">
-								<div class="uk-card uk-card-small uk-card-default">
-									<div class="uk-card-header">
-										<div class="uk-grid uk-grid-small uk-text-small" data-uk-grid>
-											<div class="uk-width-expand">
-												<span class="cat-txt">  Lecturer </span>
-											</div>
-											<div class="uk-width-auto uk-text-right uk-text-muted"  
-											
-											title="Joined"
-														data-uk-tooltip>
-												<%let localTimeString = new Date(teacher.createdAt).toLocaleDateString();%>
+									<div class="uk-card uk-card-small uk-card-default">
+										<div class="uk-card-header">
+											<div class="uk-grid uk-grid-small uk-text-small" data-uk-grid>
+												<div class="uk-width-expand">
+													<span class="cat-txt">  Lecturer </span>
+												</div>
+												<div class="uk-width-auto uk-text-right uk-text-muted"  
+												
+												title="Joined"
+															data-uk-tooltip>
+													<%let localTimeString = new Date(teacher.createdAt).toLocaleDateString();%>
 
-												<span data-uk-icon="icon:clock; ratio: 0.8"></span>  <%=localTimeString%>
+													<span data-uk-icon="icon:clock; ratio: 0.8"></span>  <%=localTimeString%>
+												</div>
 											</div>
 										</div>
-									</div>
-									<div class="uk-card-body">
-									
-										<h6 class="uk-margin-small-bottom uk-margin-remove-adjacent uk-text-bold"><%= teacher.username  %></h6>
-									</div>
-									<div class="uk-card-footer">
-										<div class="uk-grid uk-grid-small uk-grid-divider uk-flex uk-flex-middle" data-uk-grid>
-											<!-- <div class="uk-width-expand uk-text-small text-nowrap overflow-hidden" 
-											data-uk-tooltip
-											title="Class Members"
-											>
-												clas.members  Members  
-											</div> -->
-										
-											<div class="uk-width-auto uk-text-right ms-auto">
-												<div class="uk-width-auto">
-													<div class="uk-inline">
-														<a data-uk-icon="icon:more-vertical"></a>
-														<div data-uk-dropdown="mode: click; pos:top-right">
-															<ul class="uk-nav uk-dropdown-nav">
-																<li class="uk-nav-header text-center">Actions</li>
-																<li><a href="#"><span data-uk-icon="icon: lifesaver; ratio: 0.9"></span> Change Password</a></li>
-																<li>
-																	<a href="#" class="uk-text-danger">
-																		<span data-uk-icon="icon: trash; ratio: 0.9"></span>
-																		<form id="deletelec-<%=teacher._id%>" action="/teachers/delete/<%=teacher._id%>" method="post">
-																			<button
-																			type="button"
-																			class="uk-icon-link btn btn-outline-danger "
-																			title="Remove Lecturer"
-																			data-uk-tooltip
-																			
-																			onclick="confirmClassDelete('deletelec-<%=teacher._id%>')"
-																			>
-																			Delete Lecturer
-																			</button>
-																		</form>
-																	</a>
-																</li>
-															</ul>
+										<div class="uk-card-body">
+											<h6 class="uk-margin-small-bottom uk-margin-remove-adjacent uk-text-bold"><%= teacher.username  %></h6>
+										</div>
+										<div class="uk-card-footer">
+											<div class="uk-grid uk-grid-small uk-grid-divider uk-flex uk-flex-middle" data-uk-grid>
+												<!-- <div class="uk-width-expand uk-text-small text-nowrap overflow-hidden" 
+												data-uk-tooltip
+												title="Class Members"
+												>
+													clas.members  Members  
+												</div> -->
+											
+												<div class="uk-width-auto uk-text-right ms-auto">
+													<div class="uk-width-auto">
+														<div class="uk-inline">
+															<a data-uk-icon="icon:more-vertical"></a>
+															<div data-uk-dropdown="mode: click; pos:top-right">
+																<ul class="uk-nav uk-dropdown-nav">
+																	<li class="uk-nav-header text-center">Actions</li>
+																	<!-- <li><a href="#"><span data-uk-icon="icon: lifesaver; ratio: 0.9"></span> Change Password</a></li> -->
+																	<li>
+																		<a href="#" class="uk-text-danger">
+																			<span data-uk-icon="icon: trash; ratio: 0.9"></span>
+																			<form id="deletelec-<%=teacher._id%>" action="/teachers/delete/<%=teacher._id%>" method="post">
+																				<button
+																				type="button"
+																				class="uk-icon-link btn btn-outline-danger "
+																				title="Remove Lecturer"
+																				data-uk-tooltip
+																				
+																				onclick="confirmClassDelete('deletelec-<%=teacher._id%>')"
+																				>
+																				Delete Lecturer
+																				</button>
+																			</form>
+																		</a>
+																	</li>
+																</ul>
+															</div>
 														</div>
 													</div>
 												</div>
@@ -803,7 +993,6 @@
 										</div>
 									</div>
 								</div>
-							</div>
 								<%})) %> 
 								
 								
