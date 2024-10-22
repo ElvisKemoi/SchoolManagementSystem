@@ -40,6 +40,7 @@ const studentRoutes = require("./routes/studentRoutes");
 const commonRoutes = require("./routes/commonRoutes");
 const unitRoutes = require("./routes/unitRoute");
 const timetableRouters = require("./routes/timetableRoutes");
+const feesStructureRouters = require("./routes/feesRoutes");
 app.use("/", teachersRoutes);
 app.use("/", eventsRoutes);
 app.use("/", assignmentRoutes);
@@ -48,6 +49,7 @@ app.use("/", studentRoutes);
 app.use("/", commonRoutes);
 app.use("/unit", unitRoutes);
 app.use("/timetable", timetableRouters);
+app.use("/fees", feesStructureRouters);
 
 // Ensure error handling middleware is set up
 app.use((err, req, res, next) => {

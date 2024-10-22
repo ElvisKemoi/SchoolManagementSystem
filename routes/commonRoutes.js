@@ -9,6 +9,7 @@ const Event = require("../models/events");
 const flash = require("connect-flash");
 const unit = require("../controllers/unitController");
 const timetable = require("../controllers/timetableController");
+const fees = require("../controllers/feesController");
 
 router.use(flash());
 
@@ -20,6 +21,7 @@ const {
 } = require("../controllers/functions");
 
 const passportConfig = require("../passportConfig");
+
 passportConfig(router);
 
 // COMMON ROUTES
@@ -46,6 +48,7 @@ router.get("/dashboard", async (req, res) => {
 		let user;
 		const classes = await Class.find({}).sort({ className: 1 });
 		const timetableList = await timetable.list();
+		const feesStructures = await fees.list();
 		const commonData = {
 			userName: req.user.username,
 			userId: req.user._id,
@@ -53,6 +56,7 @@ router.get("/dashboard", async (req, res) => {
 			formatDate: formatDate,
 			deadlineReached: deadlineReached,
 			timetables: timetableList,
+			feesStructures: feesStructures,
 			messages: req.flash("info"),
 		};
 
