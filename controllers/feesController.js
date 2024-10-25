@@ -31,12 +31,13 @@ const feesStorage = multer.diskStorage({
 const upload = multer({
 	storage: feesStorage,
 	fileFilter: (req, file, cb) => {
-		// TODO ADD ALL XML FORMATS
 		const validTypes = [
 			"text/plain",
 			"application/pdf",
 			"application/msword",
 			"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+			"application/vnd.ms-excel", // For .xls files
+			"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // For .xlsx files
 		];
 
 		if (validTypes.includes(file.mimetype)) {
