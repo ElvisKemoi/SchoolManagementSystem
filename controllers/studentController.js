@@ -1,5 +1,6 @@
 const Student = require("../models/studentModel");
 const unit = require("./unitController");
+const messages = require("./messageController");
 
 const student = {
 	createFirst: async (username, password) => {
@@ -40,6 +41,11 @@ const student = {
 						const addedMember = await unit.addMember(unitId, studentId);
 
 						if (updatedStudent && addedMember) {
+							const savedMessage = await messages.save(
+								"Enrolled into unit!",
+								studentId
+							);
+							console.log(savedMessage);
 							return true;
 						} else {
 							throw new Error("Unit Not Added!");

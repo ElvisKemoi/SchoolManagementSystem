@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
 const passport = require("passport");
 const Unit = require("./unitModel");
+const messagesSchema = require("./messagesModal");
 
 const studentSchema = new mongoose.Schema(
 	{
@@ -24,6 +25,10 @@ const studentSchema = new mongoose.Schema(
 		myUnits: {
 			type: [mongoose.Schema.objectId],
 			ref: Unit,
+			default: [],
+		},
+		messages: {
+			type: [messagesSchema],
 			default: [],
 		},
 	},
