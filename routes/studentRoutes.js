@@ -99,6 +99,26 @@ router
 			req.flash("info", deletedStudent.error);
 		}
 		res.redirect("/dashboard");
+	})
+	.post("/students/messages/markasread/:id", async (req, res) => {
+		const { id } = req.params;
+		const updatedStudent = await student.markMessagesAsRead(id);
+		if (!updatedStudent.error) {
+			req.flash("info", "Messages Updated Successfully!");
+		} else {
+			req.flash("info", updatedStudent.error);
+		}
+		res.redirect("/dashboard");
+	})
+	.post("/students/messages/delete/:id", async (req, res) => {
+		const { id } = req.params;
+		const deletedStudent = await student.deleteMessages(id);
+		if (!deletedStudent.error) {
+			req.flash("info", "Messages Deleted Successfully!");
+		} else {
+			req.flash("info", deletedStudent.error);
+		}
+		res.redirect("/dashboard");
 	});
 
 module.exports = router;

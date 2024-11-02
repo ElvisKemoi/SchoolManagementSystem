@@ -90,6 +90,23 @@
 						></span
 						>My Timetable</a
 					>
+					<% let newMessages; %>
+				</li>
+				<% newMessages = user.messages.filter(themessage =>
+				!themessage.read).length %>
+
+				<li>
+					<a
+						href="#myTimetable"
+						data-bs-toggle="modal"
+						data-bs-target="#messagesModal"
+						><span
+							data-uk-icon="icon: comments"
+							class="uk-margin-small-right"
+						></span
+						>Messages
+						<span class="badge bg-primary"><%= newMessages %></span>
+					</a>
 				</li>
 				<li class="uk-parent">
 					<a href="#"

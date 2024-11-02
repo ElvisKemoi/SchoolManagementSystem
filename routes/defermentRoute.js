@@ -9,6 +9,7 @@ router
 		const { reason } = req.body;
 		const savedDefermentRequest = await deferment.save(
 			req.user.username,
+			req.user._id,
 			reason
 		);
 		if (!savedDefermentRequest.error) {

@@ -3,6 +3,7 @@ const unit = require("./unitController");
 const messages = require("./messageController");
 
 const student = {
+	messages: messages,
 	createFirst: async (username, password) => {
 		try {
 			const adminFound = await Student.find({ username: username });
@@ -45,7 +46,6 @@ const student = {
 								"Enrolled into unit!",
 								studentId
 							);
-							console.log(savedMessage);
 							return true;
 						} else {
 							throw new Error("Unit Not Added!");
@@ -62,6 +62,10 @@ const student = {
 					const addedMember = await unit.addMember(unitId, studentId);
 
 					if (updatedStudent && addedMember) {
+						const savedMessage = await messages.save(
+							"Enrolled into unit!",
+							studentId
+						);
 						return true;
 					} else {
 						throw new Error("Unit Not Added!");
@@ -112,6 +116,28 @@ const student = {
 			}
 
 			return true;
+		} catch (error) {
+			return { error: error.message };
+		}
+	},
+	markMessagesAsRead: async (studentId) => {
+		try {
+			const updatedStudent = await messages.markAsRead(studentId);
+			if (!updatedStudent.error) {
+				return true;
+			}
+		} catch (error) {
+			return { error: error.message };
+		}
+	},
+	deleteMessages: async (studentId) => {
+		try {
+			const deletedMessages = await messages.deleteAll(studentId);
+			if (!deletedMessages.error) {
+				return true;
+			} else {
+				throw new Error("Messages Not Deleted!");
+			}
 		} catch (error) {
 			return { error: error.message };
 		}

@@ -193,7 +193,7 @@
 							data-bs-toggle="modal"
 							data-bs-target="#messagesModal"
 							><span
-								data-uk-icon="icon: album"
+								data-uk-icon="icon: comments"
 								class="uk-margin-small-right"
 							></span
 							>Messages
@@ -643,6 +643,12 @@
 										Name: <span class="uk-text-bold"><%= user.username %></span>
 									</p>
 								</div>
+								<div class="mb-3">
+									<p>
+										Input details on your deferment request including the
+										semester and reason(optional)
+									</p>
+								</div>
 								<div class="form-floating mb-3">
 									<input
 										type="text"
@@ -753,7 +759,13 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="modalTitleId">Messages</h5>
+						<h5 class="modal-title" id="modalTitleId">
+							<span
+								data-uk-icon="icon: comments"
+								class="uk-margin-small-right"
+							></span
+							>Messages
+						</h5>
 						<button
 							type="button"
 							class="btn-close"
@@ -784,7 +796,7 @@
 												title="Members"
 												data-uk-tooltip
 											>
-												<% if (message.read) { %>
+												<% if (!message.read) { %>
 												<span class="uk-text-success"> 🔴 </span>
 												New <% }else{ %>
 
@@ -837,10 +849,34 @@
 						>
 							Close
 						</button>
-						<button type="button" class="btn btn-primary">
-							Mark All As Read
+						<% if (newMessages > 0) { %>
+						<form
+							action="/students/messages/markasread/<%= user._id %>"
+							method="post"
+						>
+							<button type="submit" class="btn btn-primary">
+								Mark All As Read
+								<i data-uk-icon="icon: check"></i>
+							</button>
+						</form>
+
+						<% }else{ %>
+						<button type="submit" class="btn btn-info disabled">
+							No New Messages
 							<i data-uk-icon="icon: check"></i>
 						</button>
+						<% } %> <% if (user.messages.length > 0) { %>
+						<form
+							action="/students/messages/delete/<%= user._id %>"
+							method="post"
+						>
+							<button type="submit" class="btn btn-primary">
+								Delete All
+								<i data-uk-icon="icon: trash"></i>
+							</button>
+						</form>
+
+						<% } %>
 					</div>
 				</div>
 			</div>

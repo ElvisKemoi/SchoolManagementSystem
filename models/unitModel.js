@@ -24,14 +24,17 @@ const unitSchema = new mongoose.Schema(
 	{
 		unitName: {
 			type: String,
+			trim: true,
 			required: true,
 		},
 		unitCode: {
 			type: String,
+			trim: true,
 			required: true,
 		},
 		enrollmentKey: {
 			type: String,
+			trim: true,
 			required: false,
 			default: undefined,
 		},
