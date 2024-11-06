@@ -3,7 +3,6 @@ const unit = require("./unitController");
 const messages = require("./messageController");
 
 const student = {
-	messages: messages,
 	createFirst: async (username, password) => {
 		try {
 			const adminFound = await Student.find({ username: username });
@@ -43,6 +42,7 @@ const student = {
 
 						if (updatedStudent && addedMember) {
 							const savedMessage = await messages.save(
+								Student,
 								"Enrolled into unit!",
 								studentId
 							);
@@ -63,6 +63,7 @@ const student = {
 
 					if (updatedStudent && addedMember) {
 						const savedMessage = await messages.save(
+							Student,
 							"Enrolled into unit!",
 							studentId
 						);
@@ -122,7 +123,7 @@ const student = {
 	},
 	markMessagesAsRead: async (studentId) => {
 		try {
-			const updatedStudent = await messages.markAsRead(studentId);
+			const updatedStudent = await messages.markAsRead(Student, studentId);
 			if (!updatedStudent.error) {
 				return true;
 			}
@@ -132,7 +133,7 @@ const student = {
 	},
 	deleteMessages: async (studentId) => {
 		try {
-			const deletedMessages = await messages.deleteAll(studentId);
+			const deletedMessages = await messages.deleteAll(Student, studentId);
 			if (!deletedMessages.error) {
 				return true;
 			} else {

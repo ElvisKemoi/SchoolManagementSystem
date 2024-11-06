@@ -5,6 +5,7 @@ const Assignment = require("../models/assignmentModel");
 passportConfig(router);
 const flash = require("connect-flash");
 const { deleteFile } = require("../controllers/functions");
+const teacher = require("../controllers/teachersController");
 // Route for handling teachers list
 
 router.use(flash());
@@ -197,32 +198,53 @@ router.post("/teachers/:id/subjects", async (req, res) => {
 	}
 });
 
-router.post("/teacher/:id/delete/subjects", async (req, res) => {
-	const { id } = req.params;
-	const { subjectToDelete } = req.body;
+router
+	.post("/teacher/:id/delete/subjects", async (req, res) => {
+		const { id } = req.params;
+		const { subjectToDelete } = req.body;
 
-	if (!subjectToDelete) {
-		return res.status(400).send("Subject is required");
-	}
+		if (!subjectToDelete) {
+			return res.status(400).send("Subject is required");
+		}
 
-	try {
-		const theTeacher = await Teacher.findByIdAndUpdate(
-			id,
-			{
-				$pull: { subjectsTaught: subjectToDelete },
-			},
-			{ new: true }
-		);
-		if (!theTeacher) {
-			return res.status(404).send("Teacher not found");
+		try {
+			const theTeacher = await Teacher.findByIdAndUpdate(
+				id,
+				{
+					$pull: { subjectsTaught: subjectToDelete },
+				},
+				{ new: true }
+			);
+			if (!theTeacher) {
+				return res.status(404).send("Teacher not found");
+			}
+			res.redirect("/dashboard");
+		} catch (error) {
+			if (error.kind === "ObjectId") {
+				return res.status(400).send("Invalid teacher ID");
+			}
+			res.status(500).send(error.message);
+		}
+	})
+	.post("/teachers/messages/markasread/:id", async (req, res) => {
+		const { id } = req.params;
+		const updatedTeacher = await teacher.markMessageAsRead(id);
+		if (!updatedTeacher.error) {
+			req.flash("info", "Messages Updated Successfully!");
+		} else {
+			req.flash("info", updatedTeacher.error);
 		}
 		res.redirect("/dashboard");
-	} catch (error) {
-		if (error.kind === "ObjectId") {
-			return res.status(400).send("Invalid teacher ID");
+	})
+	.post("/teachers/messages/delete/:id", async (req, res) => {
+		const { id } = req.params;
+		const deletedTeacherMessage = await teacher.deleteMessages(id);
+		if (!deletedTeacherMessage.error) {
+			req.flash("info", "Messages Deleted Successfully!");
+		} else {
+			req.flash("info", deletedTeacherMessage.error);
 		}
-		res.status(500).send(error.message);
-	}
-});
+		res.redirect("/dashboard");
+	});
 
 module.exports = router;

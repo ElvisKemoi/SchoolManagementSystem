@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
 const passport = require("passport");
+const messagesSchema = require("./messagesModal");
 
 const teacherSchema = new mongoose.Schema(
 	{
@@ -17,6 +18,10 @@ const teacherSchema = new mongoose.Schema(
 		subjectsTaught: { type: [String], required: false, default: [] },
 		secret: {
 			type: String,
+		},
+		messages: {
+			type: [messagesSchema],
+			default: [],
 		},
 	},
 	{

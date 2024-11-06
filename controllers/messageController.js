@@ -1,8 +1,7 @@
-const Student = require("../models/studentModel");
 const message = {
-	save: async (theTitle, studentId) => {
+	save: async (User, theTitle, studentId) => {
 		try {
-			const updatedStudent = await Student.findByIdAndUpdate(
+			const updatedStudent = await User.findByIdAndUpdate(
 				studentId,
 				{
 					$push: {
@@ -20,9 +19,10 @@ const message = {
 			return { error: error.message };
 		}
 	},
-	markAsRead: async (studentId) => {
+	markAsRead: async (User, studentId) => {
 		try {
-			const updatedStudent = await Student.findByIdAndUpdate(
+			// TODO MAKE THE FUNCTION RIGHT
+			const updatedStudent = await User.findByIdAndUpdate(
 				{ _id: studentId },
 				{ $set: { messages: { read: true } } }
 			);
@@ -31,9 +31,9 @@ const message = {
 			return { error: error.message };
 		}
 	},
-	deleteAll: async (studentId) => {
+	deleteAll: async (User, studentId) => {
 		try {
-			const updatedStudent = await Student.findByIdAndUpdate(
+			const updatedStudent = await User.findByIdAndUpdate(
 				{ _id: studentId },
 				{ $set: { messages: [] } },
 				{ new: true }

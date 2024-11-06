@@ -47,7 +47,6 @@ router
 			res.status(404).json(foundFile.error);
 		}
 		const finalPath = path.join(process.cwd(), foundFile);
-		console.log(`Final : ${finalPath}`);
 
 		res.download(finalPath, (err) => {
 			if (err) {

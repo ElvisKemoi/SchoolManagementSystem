@@ -31,6 +31,28 @@ const teacher = {
 			return "Lecturer Not Available";
 		}
 	},
+	markMessagesAsRead: async (teacherId) => {
+		try {
+			const updatedTeacher = await messages.markAsRead(Teacher, teacherId);
+			if (!updatedTeacher.error) {
+				return true;
+			}
+		} catch (error) {
+			return { error: error.message };
+		}
+	},
+	deleteMessages: async (teacherId) => {
+		try {
+			const deletedMessages = await messages.deleteAll(Teacher, teacherId);
+			if (!deletedMessages.error) {
+				return true;
+			} else {
+				throw new Error("Messages Not Deleted!");
+			}
+		} catch (error) {
+			return { error: error.message };
+		}
+	},
 };
 
 module.exports = teacher;

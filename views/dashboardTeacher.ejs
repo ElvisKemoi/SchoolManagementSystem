@@ -73,13 +73,19 @@
 									data-uk-tooltip
 								></a>
 							</li>
+							<% let newMessages; %> <% newMessages =
+							user.messages.filter(themessage => !themessage.read).length %>
 							<li>
-								<a href="#"
+								<a
+									href="#"
+									data-bs-toggle="modal"
+									data-bs-target="#messagesModal"
 									><span
 										data-uk-icon="icon: comments"
 										class="uk-margin-small-right"
 									></span
-								></a>
+									><sup class="badge bg-primary"><%= newMessages %></sup></a
+								>
 							</li>
 							<li>
 								<a
@@ -204,6 +210,20 @@
 							></span
 							>My Timetable</a
 						>
+					</li>
+
+					<li>
+						<a
+							href="#myTimetable"
+							data-bs-toggle="modal"
+							data-bs-target="#messagesModal"
+							><span
+								data-uk-icon="icon: comments"
+								class="uk-margin-small-right"
+							></span
+							>Messages
+							<span class="badge bg-primary"><%= newMessages %></span>
+						</a>
 					</li>
 				</ul>
 				<div class="left-content-box uk-margin-top">
@@ -420,6 +440,10 @@
 				</div>
 			</div>
 		</div>
+		<!-- Messages Modal -->
+
+		<%- include("./partials/messagesModal.ejs", {newMessages: newMessages,
+		theUserType:"teachers" }) %>
 
 		<!-- CONTENT -->
 		<div id="content" data-uk-height-viewport="expand: true">

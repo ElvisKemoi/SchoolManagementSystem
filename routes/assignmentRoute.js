@@ -6,6 +6,7 @@ const path = require("path");
 const multer = require("multer");
 const fs = require("fs");
 const unit = require("../controllers/unitController");
+const assignment = require("../controllers/assignmentController");
 const flash = require("connect-flash");
 
 router.use(flash());
@@ -97,18 +98,15 @@ router.post("/upload", upload.single("file"), async (req, res) => {
 			const deadlineTime = data.deadlineTime;
 			const deadline = combineDateTime(deadlineDate, deadlineTime);
 
-			// AsClass: asClass,
-			const newAssignment = new Assignment({
-				title: name,
-				description: description,
-				filePath: filePath,
-				createdBy: creator,
-				subject: subject,
-				unit: req.body.unitId,
-				deadline: deadline,
-			});
-
-			const saveStatus = await newAssignment.save();
+			const saveStatus = await assignment.save(
+				name,
+				description,
+				filePath,
+				creator,
+				subject,
+				req.body.unitId,
+				deadline
+			);
 			const savedToUnit = await unit.assignment.save(
 				saveStatus._id,
 				req.body.unitId
