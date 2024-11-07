@@ -92,7 +92,7 @@ const student = {
 					error: "Student not found or already unenrolled from this unit.",
 				};
 			}
-
+			await messages.save(Student, "Unenrolled From Unit !", studentId);
 			return { success: true, updatedStudent };
 		} catch (error) {
 			return { error: error.message };
@@ -104,7 +104,7 @@ const student = {
 			const foundStudent = await Student.findById({ _id: studentId });
 			return foundStudent;
 		} catch (error) {
-			return { error: message };
+			return { error: error.message };
 		}
 	},
 	deleteStudent: async (studentId) => {

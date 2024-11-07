@@ -1,4 +1,5 @@
 const Teacher = require("../models/teacherModel");
+const messages = require("./messageController");
 const teacher = {
 	createFirst: async (username, password) => {
 		try {

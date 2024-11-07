@@ -228,7 +228,7 @@ router
 	})
 	.post("/teachers/messages/markasread/:id", async (req, res) => {
 		const { id } = req.params;
-		const updatedTeacher = await teacher.markMessageAsRead(id);
+		const updatedTeacher = await teacher.markMessagesAsRead(id);
 		if (!updatedTeacher.error) {
 			req.flash("info", "Messages Updated Successfully!");
 		} else {

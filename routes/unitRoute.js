@@ -23,9 +23,27 @@ router
 	})
 	.post("/delete", async (req, res) => {
 		const { unitId } = req.body;
-		const deletedUnit = unit.deleteUnit(unitId);
-		res.json({ data: deletedUnit });
+
+		const deletedUnit = await unit.deleteUnit(unitId);
+
+		if (!deletedUnit.error) {
+			req.flash("info", "Unit Deleted Successfully!");
+		} else {
+			req.flash("info", deletedUnit.error);
+		}
+		res.redirect("/dashboard");
 	})
+	.get("/delete/:id", async (req, res) => {
+		const { id } = req.params;
+		const deletedUnit = await unit.deleteUnit(id);
+		if (!deletedUnit.error) {
+			req.flash("info", "Unit Deleted Successfully!");
+		} else {
+			req.flash("info", deletedUnit.error);
+		}
+		res.redirect("/dashboard");
+	})
+
 	.post("/search", async (req, res) => {
 		const { searchValue } = req.body;
 		const theResults = await unit.getSearch(searchValue);

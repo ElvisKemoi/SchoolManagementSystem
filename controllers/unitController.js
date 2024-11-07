@@ -2,6 +2,9 @@ const { $where } = require("../models/studentModel");
 const Unit = require("../models/unitModel");
 const teacher = require("./teachersController");
 const Assignment = require("../models/assignmentModel");
+const Teacher = require("../models/teacherModel");
+const messages = require("./messageController");
+const Student = require("../models/studentModel");
 
 const unit = {
 	save: async (unitName, unitCode, enrollmentKey, creator) => {
@@ -16,6 +19,11 @@ const unit = {
 				creator: creator,
 				creatorName: creatorName,
 			});
+			const savedTeacherMessage = await messages.save(
+				Teacher,
+				`Added New Unit: ${unitName}`,
+				creator
+			);
 			const savedUnit = await newUnit.save();
 			if (savedUnit) {
 				if (!savedUnit.error) {
@@ -33,6 +41,17 @@ const unit = {
 	deleteUnit: async (unitId) => {
 		try {
 			const deletedUnit = await Unit.findByIdAndDelete({ _id: unitId });
+			const { members } = deletedUnit;
+
+			for (let index = 0; index < members.length; index++) {
+				const member = members[index];
+				const updatedStudent = await Student.findByIdAndUpdate(
+					member,
+					{ $pull: { myUnits: unitId } },
+					{ new: true }
+				);
+			}
+
 			if (deletedUnit) {
 				return true;
 			} else {
@@ -44,14 +63,18 @@ const unit = {
 	},
 	addMember: async (unitId, studentId) => {
 		try {
-			const updatedUnit = await Unit.findByIdAndUpdate(
-				{ _id: unitId },
-				{ $push: { members: studentId } }
-			);
-			if (updatedUnit) {
-				return true;
-			} else {
-				throw new Error("Member Not Added!");
+			const foundUnit = await Unit.findById(unitId);
+			const { members } = foundUnit;
+			if (!members.includes(studentId)) {
+				const updatedUnit = await Unit.findByIdAndUpdate(
+					{ _id: unitId },
+					{ $push: { members: studentId } }
+				);
+				if (updatedUnit) {
+					return true;
+				} else {
+					throw new Error("Member Not Added!");
+				}
 			}
 		} catch (error) {
 			return { error: error.message };

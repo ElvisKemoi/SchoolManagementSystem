@@ -21,16 +21,16 @@ const message = {
 	},
 	markAsRead: async (User, studentId) => {
 		try {
-			// TODO MAKE THE FUNCTION RIGHT
-			const updatedStudent = await User.findByIdAndUpdate(
+			const updatedStudent = await User.updateOne(
 				{ _id: studentId },
-				{ $set: { messages: { read: true } } }
+				{ $set: { "messages.$[].read": true } } // $[] updates all elements in the array
 			);
-			return true;
+			return updatedStudent.modifiedCount > 0; // Return true if at least one document was modified
 		} catch (error) {
 			return { error: error.message };
 		}
 	},
+
 	deleteAll: async (User, studentId) => {
 		try {
 			const updatedStudent = await User.findByIdAndUpdate(

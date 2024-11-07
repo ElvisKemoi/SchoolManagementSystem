@@ -59,7 +59,7 @@ app.use((err, req, res, next) => {
 	res.status(500).send("Something went wrong!");
 });
 
-async function firstUsers(username, password) {
+async function firstUsers() {
 	await Promise.all([
 		admin.createFirst(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD),
 		teacher.createFirst(

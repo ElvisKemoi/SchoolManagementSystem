@@ -80,7 +80,9 @@
 										</li>
 										<li class="uk-nav-divider"></li>
 										<li>
-											<a href="#" class="uk-text-danger"
+											<a
+												href="/unit/delete/<%= Unit._id%>"
+												class="uk-text-danger"
 												><span data-uk-icon="icon: trash"></span>Delete Class</a
 											>
 										</li>
@@ -320,6 +322,26 @@
 									}
 								})
 								.catch((error) => console.error("Error:", error));
+						}
+
+						function confirmDeleteUnit() {
+							Swal.fire({
+								title: "Are you sure?",
+								text: "You won't be able to revert this!",
+								icon: "warning",
+								showCancelButton: true,
+								confirmButtonColor: "#3085d6",
+								cancelButtonColor: "#d33",
+								confirmButtonText: "Yes, delete it!",
+							}).then((result) => {
+								if (result.isConfirmed) {
+									const { value } = document.getElementById("unitIdValue");
+
+									fetch(`/unit/delete/${value}`, {
+										method: "GET",
+									});
+								}
+							});
 						}
 					</script>
 					<div class="uk-width-1-1@l">
