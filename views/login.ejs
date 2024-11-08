@@ -55,7 +55,7 @@
 				<!-- <img src="img/login-logo.svg" alt="Logo" /> -->
 				<a class="uk-logo" href=""></a>
 				<img
-					src="img/WesterLogo.jpg"
+					src="img/WesterLogo1.png"
 					width="100"
 					class="rounded-circle"
 					alt="Logo"
@@ -87,6 +87,7 @@
 									id="flexRadioDefault2"
 									value="Student"
 									checked
+									onchange="changeLabel('Student')"
 								/>
 								<label class="form-check-label" for="flexRadioDefault2">
 									Student
@@ -99,6 +100,7 @@
 									value="Teacher"
 									name="userType"
 									id="flexRadioDefault3"
+									onchange="changeLabel('Lecturer')"
 								/>
 								<label class="form-check-label" for="flexRadioDefault3">
 									Lecturer
@@ -111,6 +113,7 @@
 									value="Admin"
 									name="userType"
 									id="flexRadioDefault1"
+									onchange="changeLabel('Admin')"
 								/>
 								<label class="form-check-label" for="flexRadioDefault1">
 									Admin
@@ -127,9 +130,10 @@
 							<input
 								class="uk-input uk-border-pill"
 								required
-								placeholder="Username/Student Number"
+								placeholder="Student Username"
 								name="username"
 								type="text"
+								id="usernameInput"
 							/>
 						</div>
 					</div>
@@ -226,5 +230,6 @@
 		<!-- JS FILES -->
 		<script src="https://cdn.jsdelivr.net/npm/uikit@latest/dist/js/uikit.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/uikit@latest/dist/js/uikit-icons.min.js"></script>
+		<script src="js/login.js"></script>
 	</body>
 </html>

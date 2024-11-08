@@ -30,6 +30,7 @@ const student = {
 
 			if (!foundUnits.myUnits.includes(unitId)) {
 				const theUnitProtected = await unit.isProtected(unitId);
+				const theUnit = await unit.getUnit(unitId);
 
 				if (theUnitProtected) {
 					if (theUnitProtected === enrollmentKey) {
@@ -43,7 +44,7 @@ const student = {
 						if (updatedStudent && addedMember) {
 							const savedMessage = await messages.save(
 								Student,
-								"Enrolled into unit!",
+								`Enrolled into unit: ${theUnit.unitCode}, ${theUnit.unitName}, by: Lec ${theUnit.creatorName}`,
 								studentId
 							);
 							return true;
@@ -60,11 +61,10 @@ const student = {
 						{ new: true }
 					);
 					const addedMember = await unit.addMember(unitId, studentId);
-
 					if (updatedStudent && addedMember) {
 						const savedMessage = await messages.save(
 							Student,
-							"Enrolled into unit!",
+							`Enrolled into unit: ${theUnit.unitCode}, ${theUnit.unitName}, by: Lec ${theUnit.creatorName}`,
 							studentId
 						);
 						return true;

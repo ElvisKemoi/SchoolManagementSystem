@@ -76,6 +76,7 @@ const unit = {
 					throw new Error("Member Not Added!");
 				}
 			}
+			return true;
 		} catch (error) {
 			return { error: error.message };
 		}
