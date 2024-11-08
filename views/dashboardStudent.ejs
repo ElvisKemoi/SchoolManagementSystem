@@ -150,10 +150,15 @@
 							</li>
 							<li class="uk-nav-divider"></li>
 							<li>
-								<a href="#"
-									><span data-uk-icon="icon: image"></span> Your Data</a
-								>
+								<a class="uk-button" href="#modal-center" data-uk-toggle>
+									<span
+										data-uk-icon="icon: settings"
+										class="uk-margin-small-right"
+									></span
+									>Change Password
+								</a>
 							</li>
+
 							<li class="uk-nav-divider"></li>
 							<li>
 								<a href="/logout"
@@ -371,6 +376,11 @@
 		<!-- /LEFT BAR -->
 
 		<!-- MODALS -->
+
+		<!-- Change Password Modal -->
+
+		<%- include("./partials/changePasswordModal.ejs", {theUserType: "students"})
+		%>
 
 		<!-- Add Unit Modal -->
 		<div

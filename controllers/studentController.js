@@ -86,6 +86,7 @@ const student = {
 				{ $pull: { myUnits: unitId } },
 				{ new: true }
 			);
+			const updatedUnits = await unit.removeMember(unitId, studentId);
 
 			if (!updatedStudent) {
 				return {

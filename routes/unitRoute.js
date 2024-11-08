@@ -1,13 +1,13 @@
 const router = require("express").Router();
 const unit = require("../controllers/unitController");
 const flash = require("connect-flash");
+const thisGuy = require("../middleware/authentications");
 
 router.use(flash());
 
 router
-	.post("/", async (req, res) => {
+	.post("/", thisGuy.hasAccess, async (req, res) => {
 		const { unitName, unitCode, enrollmentKey } = req.body;
-
 		const savedUnit = await unit.save(
 			unitName,
 			unitCode,
@@ -21,11 +21,9 @@ router
 		}
 		res.redirect("/dashboard");
 	})
-	.post("/delete", async (req, res) => {
+	.post("/delete", thisGuy.hasAccess, async (req, res) => {
 		const { unitId } = req.body;
-
 		const deletedUnit = await unit.deleteUnit(unitId);
-
 		if (!deletedUnit.error) {
 			req.flash("info", "Unit Deleted Successfully!");
 		} else {
@@ -33,7 +31,7 @@ router
 		}
 		res.redirect("/dashboard");
 	})
-	.get("/delete/:id", async (req, res) => {
+	.get("/delete/:id", thisGuy.hasAccess, async (req, res) => {
 		const { id } = req.params;
 		const deletedUnit = await unit.deleteUnit(id);
 		if (!deletedUnit.error) {
@@ -49,7 +47,7 @@ router
 		const theResults = await unit.getSearch(searchValue);
 		res.json(theResults);
 	})
-	.post("/announcement", async (req, res) => {
+	.post("/announcement", thisGuy.hasAccess, async (req, res) => {
 		const { announcementTitle, announcementDetails, unitId } = req.body;
 
 		try {
@@ -71,7 +69,7 @@ router
 			return res.status(500).redirect("/dashboard");
 		}
 	})
-	.get("/delete/:unitId/:id", async (req, res) => {
+	.get("/delete/:unitId/:id", thisGuy.hasAccess, async (req, res) => {
 		const { unitId, id } = req.params;
 		const deletedAnnouncement = await unit.announcement.delete(id, unitId);
 

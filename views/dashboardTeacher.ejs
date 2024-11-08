@@ -296,42 +296,11 @@
 		</aside>
 		<!-- /LEFT BAR -->
 		<!-- MODALS -->
-		<div id="modal-center" class="uk-flex-top" data-uk-modal>
-			<div
-				class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical card rounded"
-			>
-				<button
-					class="uk-modal-close-default"
-					type="button"
-					data-uk-close
-				></button>
+		<!-- Change Password Modal -->
 
-				<div class="container form-container">
-					<h2 class="text-center">Change Password</h2>
-					<form
-						id="changePasswordForm"
-						method="post"
-						action="/teachers/<%=userId %>/password"
-					>
-						<div class="form-group">
-							<label for="newPassword">New Password</label>
-							<input
-								type="password"
-								class="form-control"
-								id="newPassword"
-								name="password"
-								placeholder="Enter new password"
-								required
-							/>
-						</div>
+		<%- include("./partials/changePasswordModal.ejs", {theUserType: "teachers"})
+		%>
 
-						<button type="submit" class="btn btn-primary btn-block">
-							Change Password
-						</button>
-					</form>
-				</div>
-			</div>
-		</div>
 		<div id="modal-center1" class="uk-flex-top" data-uk-modal>
 			<div
 				class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical card rounded"

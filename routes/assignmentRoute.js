@@ -8,6 +8,7 @@ const fs = require("fs");
 const unit = require("../controllers/unitController");
 const assignment = require("../controllers/assignmentController");
 const flash = require("connect-flash");
+const thisGuy = require("../middleware/authentications");
 
 router.use(flash());
 
@@ -83,9 +84,12 @@ const upload = multer({
 // });
 
 // Handle file upload and save metadata to MongoDB
-router.post("/upload", upload.single("file"), async (req, res) => {
-	try {
-		if (req.isAuthenticated()) {
+router.post(
+	"/upload",
+	thisGuy.hasAccess,
+	upload.single("file"),
+	async (req, res) => {
+		try {
 			const data = JSON.parse(req.body.more);
 			const filePath = req.file.path;
 			const creator = req.user.username;
@@ -116,13 +120,13 @@ router.post("/upload", upload.single("file"), async (req, res) => {
 				assignment: saveStatus,
 			});
 			// res.redirect("/assignments");
+		} catch (error) {
+			res
+				.status(500)
+				.json({ message: "Error uploading file", error: error.message });
 		}
-	} catch (error) {
-		res
-			.status(500)
-			.json({ message: "Error uploading file", error: error.message });
 	}
-});
+);
 
 // 1. Get all assignments
 // router.get("/assignments/all", async (req, res) => {
@@ -195,45 +199,35 @@ async function deleteFile(filePath) {
 
 // 3. Delete assignment by ID
 router.post("/assignments/delete/:id", async (req, res) => {
-	if (req.isAuthenticated()) {
-		// const referer = req.headers.referer || req.get("referer");
-		// const refererArray = referer.split("/");
-		// const originRoute = refererArray[refererArray.length - 1];
+	try {
+		const deleteStatus = await deleteFile(req.body.filePath);
 
-		try {
-			const deleteStatus = await deleteFile(req.body.filePath);
-
-			// Check if deleteStatus is false and throw an error
-			if (!deleteStatus) {
-				throw new Error("File deletion failed");
-			}
-
-			const removedFromUnit = await unit.assignment.remove(req.params.id);
-
-			if (!removedFromUnit.error) {
-				// return res.status(404).json({ message: "Cannot find assignment" });
-				req.flash("info", removedFromUnit.error);
-			} else {
-				req.flash("info", removedFromUnit.message);
-			}
-			res.redirect(`/dashboard`);
-		} catch (err) {
-			req.flash("info", err.message);
-			// res.status(500).json({ message: err.message });
+		// Check if deleteStatus is false and throw an error
+		if (!deleteStatus) {
+			throw new Error("File deletion failed");
 		}
-	} else {
-		res.redirect("/login");
+
+		const removedFromUnit = await unit.assignment.remove(req.params.id);
+
+		if (!removedFromUnit.error) {
+			// return res.status(404).json({ message: "Cannot find assignment" });
+			req.flash("info", removedFromUnit.error);
+		} else {
+			req.flash("info", removedFromUnit.message);
+		}
+		res.redirect(`/dashboard`);
+	} catch (err) {
+		req.flash("info", err.message);
+		// res.status(500).json({ message: err.message });
 	}
 });
 router.post("/units/assignments/delete/:id/:unitId", async (req, res) => {
 	try {
 		// Check if deleteStatus is false and throw an error
-
 		const removedFromUnit = await unit.assignment.remove(
 			req.params.id,
 			req.params.unitId
 		);
-
 		const deleteStatus = await deleteFile(req.body.filePath);
 		if (!deleteStatus) {
 			throw new Error("File deletion failed");
@@ -269,7 +263,6 @@ router.get("/assignments/download/:id", async (req, res) => {
 		if (!assignment) {
 			return res.status(404).json({ error: "Assignment not found" });
 		}
-
 		const filePath = path.resolve(assignment.filePath);
 		res.download(filePath, (err) => {
 			if (err) {

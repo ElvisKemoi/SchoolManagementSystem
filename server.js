@@ -28,6 +28,10 @@ app.use(
 	})
 );
 
+const passportConfig = require("./passportConfig");
+
+passportConfig(app);
+
 // DATABASE CONNECTION
 mongoose.connect(process.env.MONGODB_URI);
 
@@ -56,7 +60,7 @@ app.use("/deferment", defermentRoutes);
 // Ensure error handling middleware is set up
 app.use((err, req, res, next) => {
 	console.error(err);
-	res.status(500).send("Something went wrong!");
+	res.status(500).send(`Something went wrong!<br/>: Error: ${err}`);
 });
 
 async function firstUsers() {
