@@ -21,6 +21,14 @@ const thisGuy = {
 			res.redirect("/login");
 		}
 	},
+	isTeacher: async (req, res, next) => {
+		if (req.session.passport.user.type === "Teacher") {
+			next();
+		} else {
+			req.flash("info", "Action Prohibited! Login As Admin To Continue.");
+			res.redirect("/login");
+		}
+	},
 	register: async (req, res, next) => {
 		const userType = req.body.userType; // Assuming userType is passed in the request body
 		let UserModel;

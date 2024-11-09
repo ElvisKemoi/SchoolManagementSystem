@@ -1,5 +1,6 @@
 const Deferment = require("../models/defermentModel");
-const { messages } = require("./studentController");
+const messages = require("./messageController");
+const Student = require("../models/studentModel");
 const deferment = {
 	save: async (studentName, studentId, reason) => {
 		try {
@@ -12,6 +13,7 @@ const deferment = {
 
 			if (!savedDeferment.error) {
 				const savedMessage = await messages.save(
+					Student,
 					"Deferment Request Sent Successfully. Please wait for confirmation.",
 					studentId
 				);
@@ -33,8 +35,8 @@ const deferment = {
 					},
 				}
 			);
-
 			const savedMessage = await messages.save(
+				Student,
 				"Deferment Request Approved!",
 				theDeferment.studentNumber
 			);

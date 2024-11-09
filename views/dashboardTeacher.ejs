@@ -416,18 +416,7 @@
 
 		<!-- CONTENT -->
 		<div id="content" data-uk-height-viewport="expand: true">
-			<% for( let index = 0; index < messages.length; index++ ) { %>
-			<div class="alert alert-primary alert-dismissible fade show" role="alert">
-				<button
-					type="button"
-					class="btn-close"
-					data-bs-dismiss="alert"
-					aria-label="Close"
-				></button>
-				<strong>Alert </strong> <%= messages[index] %>
-			</div>
-
-			<% } %>
+			<%- include("./partials/alerts.ejs") %>
 
 			<div class="uk-container uk-container-expand">
 				<div

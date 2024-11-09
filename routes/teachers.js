@@ -1,8 +1,8 @@
 const router = require("express").Router();
 const Teacher = require("../models/teacherModel");
-const passportConfig = require("../passportConfig");
+// const passportConfig = require("../passportConfig");
 const Assignment = require("../models/assignmentModel");
-passportConfig(router);
+// passportConfig(router);
 const flash = require("connect-flash");
 const { deleteFile } = require("../controllers/functions");
 const teacher = require("../controllers/teachersController");

@@ -2,12 +2,12 @@ const router = require("express").Router();
 const flash = require("connect-flash");
 const Student = require("../models/studentModel");
 const student = require("../controllers/studentController");
-const user = require("../middleware/authentications");
+const thisGuy = require("../middleware/authentications");
 
 router.use(flash());
 
 router
-	.post("/students/add", user.hasAccess, async (req, res) => {
+	.post("/students/add", thisGuy.hasAccess, async (req, res) => {
 		Student.register(
 			{ username: req.body.username },
 			req.body.password,
@@ -21,7 +21,7 @@ router
 			}
 		);
 	})
-	.post("/students/:id/class", user.hasAccess, async (req, res) => {
+	.post("/students/:id/class", thisGuy.hasAccess, async (req, res) => {
 		const studentId = req.params.id;
 		const newClass = await req.body.newClass;
 		try {
@@ -41,7 +41,7 @@ router
 			res.status(500).json({ message: err.message });
 		}
 	})
-	.post("/students/addunit", user.hasAccess, async (req, res) => {
+	.post("/students/addunit", thisGuy.hasAccess, async (req, res) => {
 		let { unitId, enrollmentKey } = req.body;
 
 		const addedUnit = await student.enrollUnit(
@@ -57,7 +57,7 @@ router
 		}
 		res.redirect("/dashboard");
 	})
-	.post("/students/removeunit", user.hasAccess, async (req, res) => {
+	.post("/students/removeunit", thisGuy.hasAccess, async (req, res) => {
 		const { unitId } = req.body;
 		try {
 			const result = await student.unenrollUnit(req.user._id, unitId);
@@ -77,7 +77,7 @@ router
 			});
 		}
 	})
-	.post("/students/delete/:id", user.hasAccess, async (req, res) => {
+	.post("/students/delete/:id", thisGuy.hasAccess, async (req, res) => {
 		const { id } = req.params;
 		const deletedStudent = await student.deleteStudent(id);
 		if (!deletedStudent.error) {
@@ -89,7 +89,7 @@ router
 	})
 	.post(
 		"/students/messages/markasread/:id",
-		user.hasAccess,
+		thisGuy.hasAccess,
 		async (req, res) => {
 			const { id } = req.params;
 			const updatedStudent = await student.markMessagesAsRead(id);
@@ -101,17 +101,21 @@ router
 			res.redirect("/dashboard");
 		}
 	)
-	.post("/students/messages/delete/:id", user.hasAccess, async (req, res) => {
-		const { id } = req.params;
-		const deletedStudent = await student.deleteMessages(id);
-		if (!deletedStudent.error) {
-			req.flash("info", "Messages Deleted Successfully!");
-		} else {
-			req.flash("info", deletedStudent.error);
+	.post(
+		"/students/messages/delete/:id",
+		thisGuy.hasAccess,
+		async (req, res) => {
+			const { id } = req.params;
+			const deletedStudent = await student.deleteMessages(id);
+			if (!deletedStudent.error) {
+				req.flash("info", "Messages Deleted Successfully!");
+			} else {
+				req.flash("info", deletedStudent.error);
+			}
+			res.redirect("/dashboard");
 		}
-		res.redirect("/dashboard");
-	})
-	.post("/students/:id/password", user.hasAccess, async (req, res) => {
+	)
+	.post("/students/:id/password", thisGuy.hasAccess, async (req, res) => {
 		try {
 			const { password } = req.body;
 			const theStudent = await Student.findById(req.params.id);
