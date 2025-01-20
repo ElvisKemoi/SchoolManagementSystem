@@ -1,7 +1,3 @@
-
-
-
-
 # School Management System
 
 This **School Management System** is a comprehensive platform designed to streamline and manage school operations efficiently. The system includes features for administrators, teachers, students, and parents, providing a unified solution for school management.
@@ -9,35 +5,40 @@ This **School Management System** is a comprehensive platform designed to stream
 ## Features
 
 ### 🏫 Administrator Dashboard
+
 - Manage student, teacher, and parent profiles.
 - Oversee class schedules and assignments.
 - Generate reports and analytics for school performance.
 
 ### 📚 Teacher Portal
+
 - Manage class rosters and attendance.
 - Assign and grade homework and exams.
 - View detailed performance reports for each student.
 
 ### 🎓 Student Portal
+
 - View class schedules and upcoming events.
 - Submit assignments and track grades.
 - Communicate with teachers.
 
 ### 👫 Parent Portal
+
 - Monitor children’s performance and attendance.
 - Stay informed with announcements and notifications.
 - Communicate with teachers and school administration.
 
 ### 📊 Reports & Analytics
+
 - Student performance insights.
 - Attendance tracking.
 - Teacher efficiency reports.
 
 ## Technologies Used
-- **Backend:**  Node.js, Javascript, Mongoose
+
+- **Backend:** Node.js, Javascript, Mongoose
 - **Frontend:** Ejs, Javascript, Css
 - **Database:** MongoDB
-
 
 ## Setup Instructions
 
@@ -62,20 +63,25 @@ This **School Management System** is a comprehensive platform designed to stream
 ## Screenshots
 
 ### Admin Dashboard
-![Admin Dashboard Screenshot](path-to-your-screenshot/admin-dashboard.png)
+
+![Admin Dashboard Screenshot](Screenshots\Admin Dashboard.png)
 
 ### Teacher Portal
-![Teacher Portal Screenshot](path-to-your-screenshot/teacher-portal.png)
+
+![Teacher Portal Screenshot](Screenshots\Lecturer Dashboard.png)
 
 ### Student Portal
-![Student Portal Screenshot](path-to-your-screenshot/student-portal.png)
 
-### Parent Portal
-![Parent Portal Screenshot](path-to-your-screenshot/parent-portal.png)
+![Student Portal Screenshot](Screenshots\Student Dashboard.png)
 
+### Login
+
+![Login Portal Screenshot](Screenshots\Login.png)
 
 ## Contributions
+
 Contributions are welcome! Please fork the repository and submit a pull request.
 
 ## License
+
 [MIT License](LICENSE)
