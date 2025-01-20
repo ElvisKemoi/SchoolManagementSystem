@@ -64,19 +64,19 @@ This **School Management System** is a comprehensive platform designed to stream
 
 ### Admin Dashboard
 
-![Admin Dashboard Screenshot](Screenshots\Admin Dashboard.png)
+![Admin Dashboard Screenshot]("Screenshots\Admin Dashboard.png")
 
 ### Teacher Portal
 
-![Teacher Portal Screenshot](Screenshots\Lecturer Dashboard.png)
+![Teacher Portal Screenshot]("Screenshots\Lecturer Dashboard.png")
 
 ### Student Portal
 
-![Student Portal Screenshot](Screenshots\Student Dashboard.png)
+![Student Portal Screenshot]("Screenshots\Student Dashboard.png")
 
 ### Login
 
-![Login Portal Screenshot](Screenshots\Login.png)
+![Login Portal Screenshot]("Screenshots\Login.png")
 
 ## Contributions
 
