@@ -48,7 +48,7 @@ This **School Management System** is a comprehensive platform designed to stream
    ```
 2. Navigate to the project directory:
    ```bash
-   cd school-management-system
+   cd Wester-Technical-College
    ```
 3. Install dependencies:
    ```bash
