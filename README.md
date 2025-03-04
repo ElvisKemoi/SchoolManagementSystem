@@ -1,32 +1,38 @@
-# School Management System
+# School Management System  
 
-This **School Management System** is a comprehensive platform designed to streamline and manage school operations efficiently. The system includes features for administrators, teachers, students, and parents, providing a unified solution for school management.
+This **School Management System** is a comprehensive platform designed to streamline and manage school operations efficiently. The system includes features for administrators, teachers, students, and parents, providing a unified solution for school management.  
+
+🔗 **Live Demo:** [Check it out here](https://schoolmanagement.photosoko.com/)  
 
 ## Features
 
-### 🏫 Administrator Dashboard
+## 🏫 Administrator Dashboard  
+- Manage student, teacher, and parent profiles.  
+- Oversee class schedules and assignments.  
+- Generate reports and analytics for school performance.  
 
-- Manage student, teacher, and parent profiles.
-- Oversee class schedules and assignments.
-- Generate reports and analytics for school performance.
+**Test Credentials:**  
+- **Username:** `Admin Test`  
+- **Password:** `111111`  
 
-### 📚 Teacher Portal
+## 📚 Teacher Portal  
+- Manage class rosters and attendance.  
+- Assign and grade homework and exams.  
+- View detailed performance reports for each student.  
 
-- Manage class rosters and attendance.
-- Assign and grade homework and exams.
-- View detailed performance reports for each student.
+**Test Credentials:**  
+- **Username:** `Lecturer Test`  
+- **Password:** `111111`  
 
-### 🎓 Student Portal
+## 🎓 Student Portal  
+- View class schedules and upcoming events.  
+- Submit assignments and track grades.  
+- Communicate with teachers.  
 
-- View class schedules and upcoming events.
-- Submit assignments and track grades.
-- Communicate with teachers.
+**Test Credentials:**  
+- **Username:** `Student Test`  
+- **Password:** `111111`  
 
-### 👫 Parent Portal
-
-- Monitor children’s performance and attendance.
-- Stay informed with announcements and notifications.
-- Communicate with teachers and school administration.
 
 ### 📊 Reports & Analytics
 
